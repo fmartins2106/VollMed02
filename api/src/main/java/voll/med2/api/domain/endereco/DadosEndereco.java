@@ -2,10 +2,11 @@ package voll.med2.api.domain.endereco;
 
 public record DadosEndereco(
         String logradouro,
-        String bairro,
-        String cep,
+        String endereco,
         String numero,
-        String complemento,
+        String cep,
+        String bairro,
         String cidade,
-        String uf) {
+        String uf,
+        String complemento) {
 }
