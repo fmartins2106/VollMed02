@@ -1,11 +1,15 @@
 package voll.med2.api.domain.medico;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import voll.med2.api.domain.endereco.Endereco;
+import voll.med2.api.domain.endereco.DadosEndereco;
 
+@Entity(name = "Medico")
+@Table(name = "medicos")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +20,6 @@ public class Medico {
     private String email;
     private String telefone;
     private String crm;
-    private Especialidade especialidade;
-    private Endereco endereco;
+    Especialidade especialidade;
+    DadosEndereco endereco;
 }

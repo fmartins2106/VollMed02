@@ -5,8 +5,8 @@ import voll.med2.api.domain.endereco.DadosEndereco;
 public record DadosCadastroMedico(
         String nome,
         String email,
-        String crm,
         String telefone,
+        String crm,
         Especialidade especialidade,
-        DadosEndereco endereco) {
+        DadosEndereco endereco){
 }
