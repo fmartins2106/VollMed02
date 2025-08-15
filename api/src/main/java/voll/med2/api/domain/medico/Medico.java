@@ -3,7 +3,10 @@ package voll.med2.api.domain.medico;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import voll.med2.api.domain.endereco.DadosEndereco;
 
 @Entity(name = "Medico")
@@ -24,7 +27,7 @@ public class Medico {
     @Enumerated(EnumType.STRING)
     Especialidade especialidade;
 
-    @Embedded // Indica que os atributos de Endereco serão colunas desta tabela.
+    @Embedded
     DadosEndereco endereco;
 
     @NotNull

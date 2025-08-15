@@ -9,7 +9,6 @@ public record DadosEndereco(
 
         @NotBlank
         String endereco,
-
         String numero,
         String complemento,
 
@@ -19,10 +18,8 @@ public record DadosEndereco(
 
         @NotBlank
         String bairro,
-
         @NotBlank
         String cidade,
-
         @NotBlank
         String uf) {
 }
