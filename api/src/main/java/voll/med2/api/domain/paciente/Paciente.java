@@ -1,7 +1,8 @@
 package voll.med2.api.domain.paciente;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,11 +15,18 @@ import voll.med2.api.domain.endereco.Endereco;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Paciente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nome;
     private String email;
     private String cpf;
     private String telefone;
+
+    @Embedded
     private Endereco endereco;
+
+    @NotNull
     private boolean ativo;
 }
