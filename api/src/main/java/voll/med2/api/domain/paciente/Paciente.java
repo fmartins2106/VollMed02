@@ -1,14 +1,13 @@
 package voll.med2.api.domain.paciente;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import voll.med2.api.domain.endereco.Endereco;
-@Entity(name = "Paciente")
-@Table(name = "pacientes")
+@Entity(name = "Medico")
+@Table(name = "medicos")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +16,7 @@ public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nome;
     private String email;
     private String telefone;
@@ -24,7 +24,13 @@ public class Paciente {
 
     @Embedded
     private Endereco endereco;
+    private boolean ativo = true;
 
-    @NotBlank
-    private boolean ativo;
+    public Paciente(DadosCadastroPaciente dadosCadastroPaciente) {
+        this.nome = dadosCadastroPaciente.nome();
+        this.email = dadosCadastroPaciente.email();
+        this.telefone = dadosCadastroPaciente.telefone();
+        this.cpf = dadosCadastroPaciente.cpf();
+        this.endereco = new Endereco(dadosCadastroPaciente.dadosEndereco());
+    }
 }

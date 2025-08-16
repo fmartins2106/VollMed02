@@ -15,8 +15,8 @@ public record DadosCadastroMedico(
         @NotBlank
         String telefone,
 
-        @NotBlank(message = "Erro. CRM não informado.")
-        @Pattern(regexp = "\\d{4,6}")
+        @NotBlank(message = "Erro. Digite um número válido de CRM.")
+        @Pattern(regexp = "//d{4,6}")
         String crm,
 
         @NotBlank
