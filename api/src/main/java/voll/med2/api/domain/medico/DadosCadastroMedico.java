@@ -2,6 +2,7 @@ package voll.med2.api.domain.medico;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import voll.med2.api.domain.endereco.DadosEndereco;
 
@@ -16,12 +17,12 @@ public record DadosCadastroMedico(
         String telefone,
 
         @NotBlank(message = "Erro. Digite um número válido de CRM.")
-        @Pattern(regexp = "//d{4,6}")
+        @Pattern(regexp = "\\d{4,6}")
         String crm,
 
-        @NotBlank
+        @NotNull
         Especialidade especialidade,
 
-        @NotBlank @Valid
+        @NotNull @Valid
         DadosEndereco endereco) {
 }
