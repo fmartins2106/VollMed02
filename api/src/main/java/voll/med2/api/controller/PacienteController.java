@@ -32,4 +32,5 @@ public class PacienteController {
         var page = pacienteRepository.findAllByAtivoTrue(pageable).map(DadosListagemPacientes::new);
         return ResponseEntity.ok(page);
     }
+
 }
