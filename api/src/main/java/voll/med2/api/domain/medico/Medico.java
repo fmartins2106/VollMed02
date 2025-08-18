@@ -53,4 +53,8 @@ public class Medico {
         Optional.ofNullable(dadosAtualizacaoMedicos.endereco()).ifPresent(endereco1 ->
                 this.endereco.atualizarInformacoes(endereco1));
     }
+
+    public void excluir() {
+        this.ativo = false;
+    }
 }
