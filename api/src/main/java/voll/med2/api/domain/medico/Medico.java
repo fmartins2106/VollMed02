@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import voll.med2.api.domain.endereco.Endereco;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Entity(name = "Medico")
@@ -21,19 +22,17 @@ public class Medico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idmedico;
-
     private String nome;
     private String email;
     private String telefone;
     private String crm;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Especialidade especialidade;
 
     @Embedded
     private Endereco endereco;
-
-    @NotNull
     private boolean ativo = true;
 
     public Medico(DadosCadastroMedico dadosCadastroMedico) {
@@ -42,19 +41,19 @@ public class Medico {
         this.telefone = dadosCadastroMedico.telefone();
         this.crm = dadosCadastroMedico.crm();
         this.especialidade = dadosCadastroMedico.especialidade();
-        this.endereco = new Endereco(dadosCadastroMedico.endereco());
-        this.ativo = true;
+        this.endereco = new Endereco(dadosCadastroMedico.dadosEndereco());
     }
 
-    public void atualizarInformacoes(@Valid DadosAtualizacaoMedicos dadosAtualizacaoMedicos) {
-        Optional.ofNullable(dadosAtualizacaoMedicos.nome()).ifPresent(n -> this.nome = n);
-        Optional.ofNullable(dadosAtualizacaoMedicos.email()).ifPresent(e -> this.email = e);
-        Optional.ofNullable(dadosAtualizacaoMedicos.telefone()).ifPresent(t -> this.telefone = t);
-        Optional.ofNullable(dadosAtualizacaoMedicos.endereco()).ifPresent(endereco1 ->
-                this.endereco.atualizarInformacoes(endereco1));
+    public void atualizarDadosMedico(DadosAtualizacaoMedicos dadosAtualizacaoMedicos) {
+        Optional.ofNullable(dadosAtualizacaoMedicos.nome()).ifPresent(s -> this.nome = s);
+        Optional.ofNullable(dadosAtualizacaoMedicos.email()).ifPresent(s -> this.email = s);
+        Optional.ofNullable(dadosAtualizacaoMedicos.telefone()).ifPresent(s -> this.telefone = s);
+        Optional.ofNullable(dadosAtualizacaoMedicos.crm()).ifPresent(s -> this.crm = s);
+        Optional.ofNullable(dadosAtualizacaoMedicos.especialidade()).ifPresent(s -> this.especialidade = s);
+        Optional.ofNullable(dadosAtualizacaoMedicos.endereco()).ifPresent(s -> this.endereco = s);
     }
 
-    public void excluir() {
+    public void excluir(Medico medico) {
         this.ativo = false;
     }
 }

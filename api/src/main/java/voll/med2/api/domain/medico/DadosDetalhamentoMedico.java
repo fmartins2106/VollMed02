@@ -11,9 +11,8 @@ public record DadosDetalhamentoMedico(
         Especialidade especialidade,
         Endereco endereco) {
 
-
     public DadosDetalhamentoMedico(Medico medico) {
-        this(medico.getIdmedico(), medico.getNome(), medico.getEmail(), medico.getTelefone(),
-                medico.getCrm(), medico.getEspecialidade(),medico.getEndereco());
+        this(medico.getIdmedico(), medico.getNome(), medico.getEmail()
+                , medico.getTelefone(), medico.getCrm(), medico.getEspecialidade(), medico.getEndereco());
     }
 }

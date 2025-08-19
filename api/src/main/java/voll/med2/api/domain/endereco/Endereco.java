@@ -5,12 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
-
+@Embeddable
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Embeddable
 public class Endereco {
     private String logradouro;
     private String endereco;
@@ -30,16 +28,5 @@ public class Endereco {
         this.bairro = dadosEndereco.bairro();
         this.cidade = dadosEndereco.cidade();
         this.uf = dadosEndereco.uf();
-    }
-
-    public void atualizarInformacoes(DadosEndereco endereco1) {
-        Optional.ofNullable(endereco1.logradouro()).ifPresent(s -> this.logradouro = s);
-        Optional.ofNullable(endereco1.endereco()).ifPresent(s -> this.endereco = s);
-        Optional.ofNullable(endereco1.numero()).ifPresent(s -> this.numero = s);
-        Optional.ofNullable(endereco1.complemento()).ifPresent(s -> this.complemento = s);
-        Optional.ofNullable(endereco1.cep()).ifPresent(s -> this.cep = s);
-        Optional.ofNullable(endereco1.bairro()).ifPresent(s -> this.bairro = s);
-        Optional.ofNullable(endereco1.cidade()).ifPresent(s -> this.cidade = s);
-        Optional.ofNullable(endereco1.uf()).ifPresent(s -> this.endereco = s);
     }
 }
