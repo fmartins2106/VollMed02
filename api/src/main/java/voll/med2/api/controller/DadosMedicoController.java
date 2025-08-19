@@ -16,7 +16,7 @@ import voll.med2.api.domain.medico.*;
 public class DadosMedicoController {
 
     @Autowired
-    MedicoRepository medicoRepository;
+    private MedicoRepository medicoRepository;
 
     @PostMapping
     @Transactional
