@@ -1,6 +1,9 @@
 package voll.med2.api.infra; // Pacote da classe (organização do projeto)
 
+import jakarta.persistence.Access;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.cglib.core.Local;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +15,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.naming.spi.ResolveResult;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice // Torna esta classe um interceptador global de exceções de Controllers REST
 public class TratadorDeErros { // Centraliza o tratamento e padroniza as respostas de erro
-
 
     //------------------------
 
@@ -70,7 +74,6 @@ public class TratadorDeErros { // Centraliza o tratamento e padroniza as respost
                 .body(new ErroResponse(500, "Internal Server Error",
                         "Erro inesperado: " + ex.getMessage(), LocalDateTime.now())); // Mensagem genérica + detalhe
     }
-
 
 
 
