@@ -1,4 +1,4 @@
-package voll.med2.api.domain.pacientes;
+package voll.med2.api.domain.paciente;
 
 import voll.med2.api.domain.endereco.Endereco;
 
@@ -8,10 +8,9 @@ public record DadosDetalhamentoPaciente(
         String email,
         String telefone,
         String cpf,
-        Endereco endereco
-) {
+        Endereco endereco) {
 
-    public DadosDetalhamentoPaciente(Paciente paciente) {
+    public DadosDetalhamentoPaciente (Paciente paciente){
         this(paciente.getIdpaciente(), paciente.getNome(), paciente.getEmail(),
                 paciente.getTelefone(), paciente.getCpf(), paciente.getEndereco());
     }

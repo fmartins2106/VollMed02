@@ -1,27 +1,31 @@
 package voll.med2.api.domain.endereco;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 
 public record DadosEndereco(
-        @NotBlank
+        @NotBlank(message = "Campo logradouro não pode ser vazio.")
         String logradouro,
 
-        @NotBlank
+        @NotBlank(message = "Campo endereço não pode ser vazio.")
         String endereco,
         String numero,
         String complemento,
 
-        @NotBlank
-        @Pattern(regexp = "\\d{8}")
+        @NotBlank(message = "Campo cep não pode ser vazio.")
         String cep,
 
-        @NotBlank
+        @NotBlank(message = "Campo bairro não pode ser vazio.")
         String bairro,
 
-        @NotBlank
+        @NotBlank(message = "Campo cidade não pode ser vazio.")
         String cidade,
 
-        @NotBlank
+        @NotBlank(message = "Campo uf não pode ser vazio.")
         String uf) {
+
+    public DadosEndereco(DadosEndereco dadosEndereco) {
+        this(dadosEndereco.logradouro(), dadosEndereco.endereco(), dadosEndereco.numero(),
+                dadosEndereco.complemento(), dadosEndereco.cep(), dadosEndereco.bairro(),
+                dadosEndereco.cidade(), dadosEndereco.uf());
+    }
 }

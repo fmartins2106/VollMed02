@@ -9,7 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import voll.med2.api.domain.pacientes.*;
+import voll.med2.api.domain.paciente.*;
 
 @RestController
 @RequestMapping("pacientes")
@@ -23,21 +23,21 @@ public class DadosPacienteController {
     public ResponseEntity salvar(@RequestBody @Valid DadosCadastroPaciente dadosCadastroPaciente, UriComponentsBuilder uriComponentsBuilder){
         var paciente = new Paciente(dadosCadastroPaciente);
         pacienteRepository.save(paciente);
-        var uri = uriComponentsBuilder.path("/pacientes{idpaciente}/").buildAndExpand(dadosCadastroPaciente).toUri();
+        var uri = uriComponentsBuilder.path("/paciente{idpaciente}").buildAndExpand(paciente.getIdpaciente()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoPaciente(paciente));
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemPacientes>> listagemPacientesCadastrados(@PageableDefault(size = 10, sort = {"nome"})Pageable pageable){
-        var page = pacienteRepository.findAllByAtivoTrue(pageable).map(DadosListagemPacientes::new);
+    public ResponseEntity<Page<DadosListagemPaciente>> listagemPacientesCadastradosAtivos(@PageableDefault(size = 10, sort = {"nome"})Pageable pageable){
+        var page = pacienteRepository.findAllByAtivoTrue(pageable).map(DadosListagemPaciente::new);
         return ResponseEntity.ok(page);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizarDadosPaciente(@RequestBody @Valid DadosAtualizacaoPaciente dadosAtualizacaoPaciente){
-        var paciente = pacienteRepository.getReferenceById(dadosAtualizacaoPaciente.idpaciente());
-        paciente.atualizarDados(dadosAtualizacaoPaciente);
+    public ResponseEntity alterarDadosPaciente(@RequestBody @Valid DadosAtualizacaoPacientes dadosAtualizacaoPacientes){
+        var paciente = pacienteRepository.getReferenceById(dadosAtualizacaoPacientes.idpaciente());
+        paciente.atualizarDados(dadosAtualizacaoPacientes);
         return ResponseEntity.ok(new DadosDetalhamentoPaciente(paciente));
     }
 
@@ -45,8 +45,7 @@ public class DadosPacienteController {
     @Transactional
     public ResponseEntity excluirDadosPaciente(@PathVariable Long idpaciente){
         var paciente = pacienteRepository.getReferenceById(idpaciente);
-        paciente.excluir(paciente);
+        paciente.excluirDados();
         return ResponseEntity.noContent().build();
     }
-
 }

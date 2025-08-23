@@ -20,7 +20,7 @@ public class DadosMedicoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity salvarCadastroMedico(@RequestBody @Valid DadosCadastroMedico dadosCadastroMedico, UriComponentsBuilder uriComponentsBuilder){
+    public ResponseEntity salvar(@RequestBody @Valid DadosCadastroMedico dadosCadastroMedico, UriComponentsBuilder uriComponentsBuilder){
         var medico = new Medico(dadosCadastroMedico);
         medicoRepository.save(medico);
         var uri = uriComponentsBuilder.path("/medicos/{idmedico}").buildAndExpand(medico.getIdmedico()).toUri();
@@ -28,8 +28,8 @@ public class DadosMedicoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemMedicos>> listagemDadosMedicos(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable){
-        var page = medicoRepository.findAllByAtivoTrue(pageable).map(DadosListagemMedicos::new);
+    public ResponseEntity<Page<DadosListagemMedico>> listagemMedicosCadastrados(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable){
+        var page = medicoRepository.findALlByAtivoTrue(pageable).map(DadosListagemMedico::new);
         return ResponseEntity.ok(page);
     }
 
@@ -37,15 +37,16 @@ public class DadosMedicoController {
     @Transactional
     public ResponseEntity atualizarDadosMedicos(@RequestBody @Valid DadosAtualizacaoMedicos dadosAtualizacaoMedicos){
         var medico = medicoRepository.getReferenceById(dadosAtualizacaoMedicos.idmedico());
-        medico.atualizarDadosMedico(dadosAtualizacaoMedicos);
-        return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
+        medico.atualizarDados(dadosAtualizacaoMedicos);
+        return ResponseEntity.ok().body(new DadosDetalhamentoMedico(medico));
     }
 
     @DeleteMapping("/{idmedico}")
     @Transactional
-    public ResponseEntity excluirDadosMedicos(@PathVariable Long idmedico){
+    public ResponseEntity excluirDadosMedico(@PathVariable Long idmedico){
         var medico = medicoRepository.getReferenceById(idmedico);
-        medico.excluir(medico);
-        return ResponseEntity.ok(idmedico);
+        medico.excluir();
+        return ResponseEntity.noContent().build();
     }
+
 }
