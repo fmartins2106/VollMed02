@@ -1,6 +1,5 @@
-package voll.med2.api.domain.paciente;
+package voll.med2.api.domain.pacientes;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -10,18 +9,16 @@ public record DadosCadastroPaciente(
         @NotBlank(message = "Campo nome não pode ser vazio.")
         String nome,
 
-        @NotBlank(message = "Campo nome não pode ser vazio.")
+        @NotBlank(message = "Campo email não pode ser vazio.")
         String email,
 
-        @NotBlank(message = "Campo nome não pode ser vazio.")
+        @NotBlank(message = "Campo telefone não pode ser vazio.")
         String telefone,
 
-        @NotBlank(message = "Campo nome não pode ser vazio.")
-        @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$")
+        @NotBlank(message = "Campo cpf não pode ser vazio.")
+        @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}")
         String cpf,
 
         @NotNull
-        @Valid
         DadosEndereco endereco) {
-
 }

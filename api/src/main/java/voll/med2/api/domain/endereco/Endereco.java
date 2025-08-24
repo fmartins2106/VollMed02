@@ -32,7 +32,7 @@ public class Endereco {
         this.uf = dadosEndereco.uf();
     }
 
-    public void atualizarEndereco(DadosEndereco dadosEndereco){
+    public void alterarDadosEndereco(DadosEndereco dadosEndereco){
         Optional.ofNullable(dadosEndereco.logradouro()).ifPresent(s -> this.logradouro = s);
         Optional.ofNullable(dadosEndereco.endereco()).ifPresent(s -> this.endereco = s);
         Optional.ofNullable(dadosEndereco.numero()).ifPresent(s -> this.numero = s);
@@ -42,4 +42,5 @@ public class Endereco {
         Optional.ofNullable(dadosEndereco.cidade()).ifPresent(s -> this.cidade = s);
         Optional.ofNullable(dadosEndereco.uf()).ifPresent(s -> this.uf = s);
     }
+
 }

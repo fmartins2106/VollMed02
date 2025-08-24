@@ -1,7 +1,8 @@
-package voll.med2.api.domain.paciente;
+package voll.med2.api.domain.pacientes;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,8 +14,8 @@ import java.util.Optional;
 @Entity(name = "Paciente")
 @Table(name = "dbpacientes")
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = "idpaciente")
 public class Paciente {
     @Id
@@ -27,8 +28,11 @@ public class Paciente {
     private String cpf;
 
     @Embedded
-    Endereco endereco;
+    private Endereco endereco;
+
+    @NotNull
     private boolean ativo = true;
+
 
     public Paciente(DadosCadastroPaciente dadosCadastroPaciente) {
         this.nome = dadosCadastroPaciente.nome();
@@ -38,16 +42,17 @@ public class Paciente {
         this.endereco = new Endereco(dadosCadastroPaciente.endereco());
     }
 
-    public void atualizarDados(@Valid  DadosAtualizacaoPacientes dadosAtualizacaoPacientes) {
-        Optional.ofNullable(dadosAtualizacaoPacientes.nome()).ifPresent(s -> this.nome = s);
-        Optional.ofNullable(dadosAtualizacaoPacientes.email()).ifPresent(s -> this.email = s);
-        Optional.ofNullable(dadosAtualizacaoPacientes.telefone()).ifPresent(s -> this.telefone = s);
-        Optional.ofNullable(dadosAtualizacaoPacientes.cpf()).ifPresent(s -> this.cpf = s);
-        Optional.ofNullable(dadosAtualizacaoPacientes.endereco()).ifPresent(s
-                -> this.endereco.atualizarEndereco(dadosAtualizacaoPacientes.endereco()));
+    public void atualizarDados(@Valid DadosAlteracaoPaciente dadosAlteracaoPaciente) {
+        Optional.ofNullable(dadosAlteracaoPaciente.idpaciente()).ifPresent(s -> this.idpaciente = s);
+        Optional.ofNullable(dadosAlteracaoPaciente.nome()).ifPresent(s -> this.nome = s);
+        Optional.ofNullable(dadosAlteracaoPaciente.email()).ifPresent(s -> this.email = s);
+        Optional.ofNullable(dadosAlteracaoPaciente.telefone()).ifPresent(s -> this.telefone = s);
+        Optional.ofNullable(dadosAlteracaoPaciente.cpf()).ifPresent(s -> this.cpf = s);
+        Optional.ofNullable(dadosAlteracaoPaciente.endereco()).ifPresent( dadosEndereco ->
+                this.endereco.alterarDadosEndereco(dadosAlteracaoPaciente.endereco()));
     }
 
-    public void excluirDados() {
+    public void excluir() {
         this.ativo = false;
     }
 }

@@ -15,6 +15,7 @@ import voll.med2.api.domain.medico.*;
 @RequestMapping("medicos")
 public class DadosMedicoController {
 
+
     @Autowired
     private MedicoRepository medicoRepository;
 
@@ -28,17 +29,17 @@ public class DadosMedicoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemMedico>> listagemMedicosCadastrados(@PageableDefault(size = 10, sort = {"nome"}) Pageable pageable){
-        var page = medicoRepository.findALlByAtivoTrue(pageable).map(DadosListagemMedico::new);
+    public ResponseEntity<Page<DadosListagemMedicos>> listagemMedicosCadastradosAtivos(@PageableDefault(size = 10, sort = {"nome"})Pageable pageable){
+        var page = medicoRepository.findAllByAtivoTrue(pageable).map(DadosListagemMedicos::new);
         return ResponseEntity.ok(page);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity atualizarDadosMedicos(@RequestBody @Valid DadosAtualizacaoMedicos dadosAtualizacaoMedicos){
-        var medico = medicoRepository.getReferenceById(dadosAtualizacaoMedicos.idmedico());
-        medico.atualizarDados(dadosAtualizacaoMedicos);
-        return ResponseEntity.ok().body(new DadosDetalhamentoMedico(medico));
+    public ResponseEntity alterarDadosMedico(@RequestBody @Valid DadosAlteracaoMedico dadosAlteracaoMedico){
+        var medico = medicoRepository.getReferenceById(dadosAlteracaoMedico.idmedico());
+        medico.alterarDados(dadosAlteracaoMedico);
+        return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
     }
 
     @DeleteMapping("/{idmedico}")
@@ -48,5 +49,4 @@ public class DadosMedicoController {
         medico.excluir();
         return ResponseEntity.noContent().build();
     }
-
 }

@@ -3,6 +3,6 @@ package voll.med2.api.domain.medico;
 public enum Especialidade {
     CARDIOLOGIA,
     DERMATOLOGIA,
-    PEDIATRIA,
-    ORTOPEDIA;
+    ORTOPEDIA,
+    PEDIATRIA;
 }
