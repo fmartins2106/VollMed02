@@ -9,8 +9,8 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Embeddable
+@Getter
 public class Endereco {
     private String logradouro;
     private String endereco;
@@ -42,5 +42,4 @@ public class Endereco {
         Optional.ofNullable(dadosEndereco.cidade()).ifPresent(s -> this.cidade = s);
         Optional.ofNullable(dadosEndereco.uf()).ifPresent(s -> this.uf = s);
     }
-
 }

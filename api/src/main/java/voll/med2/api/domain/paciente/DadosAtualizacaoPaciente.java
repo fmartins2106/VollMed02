@@ -1,14 +1,13 @@
-package voll.med2.api.domain.medico;
+package voll.med2.api.domain.paciente;
 
 import voll.med2.api.domain.endereco.DadosEndereco;
 
-public record DadosAlteracaoMedico(
-        Long idmedico,
+public record DadosAtualizacaoPaciente(
+        Long idpaciente,
         String nome,
         String email,
         String telefone,
-        String crm,
-        Especialidade especialidade,
+        String cpf,
         DadosEndereco endereco) {
 
 

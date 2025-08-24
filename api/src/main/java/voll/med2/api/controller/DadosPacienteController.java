@@ -9,8 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import voll.med2.api.domain.medico.DadosListagemMedicos;
-import voll.med2.api.domain.pacientes.*;
+import voll.med2.api.domain.paciente.*;
 
 @RestController
 @RequestMapping("pacientes")
@@ -36,17 +35,20 @@ public class DadosPacienteController {
 
     @PutMapping
     @Transactional
-    public ResponseEntity alterarDadosPaciente(@RequestBody @Valid DadosAlteracaoPaciente dadosAlteracaoPaciente){
-        var paciente = pacienteRepository.getReferenceById(dadosAlteracaoPaciente.idpaciente());
-        paciente.atualizarDados(dadosAlteracaoPaciente);
-        return ResponseEntity.ok(new DadosDetalhamentoPaciente(paciente));
+    public ResponseEntity alterarDadosPaciente(@RequestBody @Valid DadosAtualizacaoPaciente dadosAtualizacaoPaciente){
+        var paciente = pacienteRepository.getReferenceById(dadosAtualizacaoPaciente.idpaciente());
+        paciente.atualizarDados(dadosAtualizacaoPaciente);
+        return ResponseEntity.ok().body(new DadosDetalhamentoPaciente(paciente));
+
     }
 
-    @DeleteMapping("/{idpaciente}")
+    @DeleteMapping("{idpaciente}")
     @Transactional
-    public ResponseEntity deletarCadastroPaciente(@PathVariable Long idpaciente){
+    public ResponseEntity deletarDadosPaciente(@PathVariable Long idpaciente){
         var paciente = pacienteRepository.getReferenceById(idpaciente);
         paciente.excluir();
         return ResponseEntity.noContent().build();
     }
+
+
 }

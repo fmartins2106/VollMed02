@@ -15,7 +15,6 @@ import voll.med2.api.domain.medico.*;
 @RequestMapping("medicos")
 public class DadosMedicoController {
 
-
     @Autowired
     private MedicoRepository medicoRepository;
 
@@ -24,29 +23,30 @@ public class DadosMedicoController {
     public ResponseEntity salvar(@RequestBody @Valid DadosCadastroMedico dadosCadastroMedico, UriComponentsBuilder uriComponentsBuilder){
         var medico = new Medico(dadosCadastroMedico);
         medicoRepository.save(medico);
-        var uri = uriComponentsBuilder.path("/medicos/{idmedico}").buildAndExpand(medico.getIdmedico()).toUri();
+        var uri = uriComponentsBuilder.path("/medico/{idmedico}").buildAndExpand(medico.getIdmedico()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoMedico(medico));
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemMedicos>> listagemMedicosCadastradosAtivos(@PageableDefault(size = 10, sort = {"nome"})Pageable pageable){
+    public ResponseEntity<Page<DadosListagemMedicos>> listagemDadosMedicos(@PageableDefault(size = 10, sort = {"nome"})Pageable pageable){
         var page = medicoRepository.findAllByAtivoTrue(pageable).map(DadosListagemMedicos::new);
         return ResponseEntity.ok(page);
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity alterarDadosMedico(@RequestBody @Valid DadosAlteracaoMedico dadosAlteracaoMedico){
-        var medico = medicoRepository.getReferenceById(dadosAlteracaoMedico.idmedico());
-        medico.alterarDados(dadosAlteracaoMedico);
-        return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
+    public ResponseEntity atualizarDadosMedico(@RequestBody @Valid DadosAtualizacaoMedico dadosAtualizacaoMedico){
+        var medico = medicoRepository.getReferenceById(dadosAtualizacaoMedico.idmedico());
+        medico.atualizarDados(dadosAtualizacaoMedico);
+        return ResponseEntity.ok().body(new DadosDetalhamentoMedico(medico));
     }
 
-    @DeleteMapping("/{idmedico}")
+    @DeleteMapping("{idmedico}")
     @Transactional
-    public ResponseEntity excluirDadosMedico(@PathVariable Long idmedico){
+    public ResponseEntity deletarDadosMedico(@PathVariable Long idmedico){
         var medico = medicoRepository.getReferenceById(idmedico);
         medico.excluir();
         return ResponseEntity.noContent().build();
     }
+
 }

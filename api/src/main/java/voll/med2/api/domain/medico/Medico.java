@@ -2,7 +2,6 @@ package voll.med2.api.domain.medico;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,7 +20,6 @@ public class Medico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idmedico;
-
     private String nome;
     private String email;
     private String telefone;
@@ -31,9 +29,8 @@ public class Medico {
     private Especialidade especialidade;
 
     @Embedded
+    @Valid
     private Endereco endereco;
-
-    @NotNull
     private boolean ativo = true;
 
     public Medico(DadosCadastroMedico dadosCadastroMedico) {
@@ -45,14 +42,15 @@ public class Medico {
         this.endereco = new Endereco(dadosCadastroMedico.endereco());
     }
 
-    public void alterarDados(@Valid  DadosAlteracaoMedico dadosAlteracaoMedico) {
-        Optional.ofNullable(dadosAlteracaoMedico.nome()).ifPresent(s -> this.nome = s);
-        Optional.ofNullable(dadosAlteracaoMedico.email()).ifPresent(s -> this.email = s);
-        Optional.ofNullable(dadosAlteracaoMedico.telefone()).ifPresent(s -> this.telefone = s);
-        Optional.ofNullable(dadosAlteracaoMedico.crm()).ifPresent(s -> this.crm = s);
-        Optional.ofNullable(dadosAlteracaoMedico.especialidade()).ifPresent(s -> this.especialidade = s);
-        Optional.ofNullable(dadosAlteracaoMedico.endereco()).ifPresent(endereco1 ->
-                this.endereco.alterarDadosEndereco(dadosAlteracaoMedico.endereco()));
+    public void atualizarDados(@Valid  DadosAtualizacaoMedico dadosAtualizacaoMedico) {
+        Optional.ofNullable(dadosAtualizacaoMedico.nome()).ifPresent(s -> this.nome = s);
+        Optional.ofNullable(dadosAtualizacaoMedico.email()).ifPresent(s -> this.email = s);
+        Optional.ofNullable(dadosAtualizacaoMedico.telefone()).ifPresent(s -> this.telefone = s);
+        Optional.ofNullable(dadosAtualizacaoMedico.crm()).ifPresent(s -> this.crm = s);
+        Optional.ofNullable(dadosAtualizacaoMedico.especialidade()).ifPresent(s -> this.especialidade = s);
+        Optional.ofNullable(dadosAtualizacaoMedico.endereco()).ifPresent(endereco1 ->
+                this.endereco.alterarDadosEndereco(dadosAtualizacaoMedico.endereco()));
+
     }
 
     public void excluir() {
