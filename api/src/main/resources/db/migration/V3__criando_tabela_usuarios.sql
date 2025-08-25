@@ -1,0 +1,5 @@
+CREATE TABLE usuarios(
+    idusuario INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    login VARCHAR(100) UNIQUE NOT NULL CHECK( login <> ''),
+    senha VARCHAR(255) NOT NULL CHECK(senha <> '')
+);
