@@ -5,31 +5,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.token.TokenService;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import voll.med2.api.domain.usuario.DadosAutenticacao;
+import voll.med2.api.domain.usuario.DadosAutenticacao2;
 import voll.med2.api.domain.usuario.Usuario;
 
 @RestController
 @RequestMapping("login")
-public class AutenticacaoController {
+public class AutenticationController02 {
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private TokenService tokenService;
+    private TokenService2 tokenService2;
 
-    @PostMapping
-    public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dadosAutenticacao){
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dadosAutenticacao.login(), dadosAutenticacao.senha());
+    @Autowired
+    private ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao2 dadosAutenticacao2){
+        var authenticationToken = new UsernamePasswordAuthenticationToken(dadosAutenticacao2.login(), dadosAutenticacao2.senha());
         var authentication = authenticationManager.authenticate(authenticationToken);
 
-        var TokenJWT = tokenService.gerarTokenJTW((Usuario) authentication.getPrincipal());
-        return ResponseEntity.ok(new DadosTokenJTW(TokenJWT));
+        var tokenJWT = tokenService2.gerarTokenJWT((Usuario) authenticatio/public////////////n.getPrincipal());
+        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }
 
 }
