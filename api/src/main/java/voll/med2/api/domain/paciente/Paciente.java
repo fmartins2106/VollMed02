@@ -2,8 +2,10 @@ package voll.med2.api.domain.paciente;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import lombok.*;
-import voll.med2.api.domain.endereco.DadosEndereco;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import voll.med2.api.domain.endereco.Endereco;
 
 import java.util.Optional;

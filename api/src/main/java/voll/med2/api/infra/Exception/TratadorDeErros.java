@@ -1,17 +1,20 @@
 package voll.med2.api.infra.Exception;
 
+import jakarta.persistence.Access;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
-import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.lang.reflect.Field;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
@@ -40,7 +43,6 @@ public class TratadorDeErros {
                 .body(new ErroResponse(404,"Not Found","Rota inexistente"+exception.getRequestURL()
                 , LocalDateTime.now()));
     }
-
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> tratarErro400(MethodArgumentNotValidException exception){

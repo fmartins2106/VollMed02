@@ -51,5 +51,4 @@ public class DadosPacienteController {
         return ResponseEntity.noContent().build();
     }
 
-
 }

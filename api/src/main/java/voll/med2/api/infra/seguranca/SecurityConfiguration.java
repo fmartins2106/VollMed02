@@ -18,32 +18,33 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
     @Autowired
-    private SecurityFilter securityFilter;
+    private SecurityFilter securityFilter; // Injeta o filtro de segurança personalizado que será executado antes do filtro de autenticação padrão
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(csrf -> csrf.disable()) // Desativa proteção CSRF, útil para APIs REST stateless
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Define que a aplicação não mantém sessão (API REST stateless)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/path").permitAll();
-                    auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers("/login").permitAll(); // Permite acesso público a /path
+                    auth.requestMatchers("/usuarios").permitAll();
+                    auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll(); // Permite acesso público à documentação Swagger
+                    auth.anyRequest().authenticated(); // Todas as outras requisições precisam estar autenticadas
                 })
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro customizado antes do filtro padrão de autenticação
+                .build(); // Constroi a configuração final da cadeia de filtros
     }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+        return authenticationConfiguration.getAuthenticationManager(); // Expõe o AuthenticationManager para ser usado em outras partes da aplicação (ex.: login manual)
     }
 
-
-   @Bean
+    @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-   }
+        return new BCryptPasswordEncoder(); // Bean que criptografa senhas usando BCrypt (recomendado para segurança)
+    }
+
 
 
 

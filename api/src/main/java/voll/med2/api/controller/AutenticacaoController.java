@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import voll.med2.api.domain.usuario.DadosAutenticacao;
 import voll.med2.api.domain.usuario.Usuario;
+import voll.med2.api.infra.seguranca.DadosTokenJTW;
 import voll.med2.api.infra.seguranca.TokenService;
 
 @RestController
-@RequestMapping("login")
+@RequestMapping("/login")
 public class AutenticacaoController {
 
     @Autowired
