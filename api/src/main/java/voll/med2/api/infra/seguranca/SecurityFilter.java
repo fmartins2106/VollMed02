@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -22,6 +21,10 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
     private TokenService tokenService;
+
+//O metodo intercepta cada requisição HTTP que chega na aplicação, verifica se existe um token JWT válido no cabeçalho
+// (Authorization) e, caso positivo, autentica o usuário no contexto de segurança do Spring. Assim, os próximos filtros,
+// controladores e endpoints já "sabem" quem é o usuário e quais são suas permissões, sem precisar pedir login e senha novamente.
 
 
     @Override
@@ -48,7 +51,11 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // Método auxiliar que pega o token JWT do header "Authorization"
+// Metodo auxiliar responsável por extrair o token JWT da requisição.
+// Ele verifica o header "Authorization" e, caso exista, remove o prefixo "Bearer ",
+// retornando apenas o token puro para que possa ser validado posteriormente.
+// Se o header não estiver presente, retorna null (sem token).
+
     private String recuperarToken(HttpServletRequest request) {
         // Lê o header "Authorization" da requisição
         var authorizationHeader = request.getHeader("Authorization");

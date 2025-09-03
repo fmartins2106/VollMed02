@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -86,6 +87,13 @@ public class TratadorDeErros {
                 .body(new ErroResponse(500,"Internal Server Error",
                         "Erro inesperado - "+exception.getMessage()
                 ,LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErroResponse> tratarBadCredentials(BadCredentialsException exception){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErroResponse(401,"Unauthorized",
+                        "Login ou senha inválidos", LocalDateTime.now()));
     }
 
 }

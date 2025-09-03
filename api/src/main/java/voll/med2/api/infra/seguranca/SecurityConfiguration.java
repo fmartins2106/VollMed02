@@ -20,6 +20,24 @@ public class SecurityConfiguration {
     @Autowired
     private SecurityFilter securityFilter; // Injeta o filtro de segurança personalizado que será executado antes do filtro de autenticação padrão
 
+
+    /**
+     * Configura a cadeia de segurança (SecurityFilterChain) do Spring Security.
+     *
+     * Funcionalidades principais:
+     * 1. Desativa CSRF (útil para APIs REST stateless).
+     * 2. Define que a aplicação não mantém sessão (SessionCreationPolicy.STATELESS).
+     * 3. Configura autorização de endpoints:
+     *    - "/login" e "/usuarios" liberados para todos.
+     *    - Swagger e documentação da API liberados para todos.
+     *    - Todos os outros endpoints exigem autenticação.
+     * 4. Adiciona o filtro customizado de JWT (securityFilter) antes do filtro padrão
+     *    de autenticação (UsernamePasswordAuthenticationFilter).
+     * 5. Constrói e retorna a configuração final da cadeia de filtros.
+     *
+     * Objetivo: garantir que somente usuários com JWT válido possam acessar os endpoints protegidos,
+     * mantendo a API segura e sem estado (stateless).
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -35,11 +53,38 @@ public class SecurityConfiguration {
                 .build(); // Constroi a configuração final da cadeia de filtros
     }
 
+
+    /**
+     * Expõe o AuthenticationManager como um bean do Spring.
+     *
+     * Funcionalidade:
+     * - Permite que outras classes da aplicação (ex.: serviços de login)
+     *   possam injetar e usar o AuthenticationManager para autenticar usuários.
+     * - Recupera o AuthenticationManager configurado automaticamente pelo Spring
+     *   a partir da AuthenticationConfiguration.
+     *
+     * Objetivo: possibilitar autenticação manual de usuários em serviços ou endpoints
+     * sem depender apenas da cadeia automática de filtros.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager(); // Expõe o AuthenticationManager para ser usado em outras partes da aplicação (ex.: login manual)
     }
 
+
+
+    /**
+     * Cria o PasswordEncoder da aplicação usando BCrypt.
+     *
+     * Funcionalidade:
+     * - BCrypt é um algoritmo de hash seguro e recomendado para senhas.
+     * - Garante que senhas nunca sejam armazenadas em texto puro no banco.
+     * - Permite verificar senhas de forma segura durante o login, comparando o hash.
+     *
+     * Exemplo de uso:
+     *   String senhaHash = passwordEncoder.encode("minhaSenha123");
+     *   passwordEncoder.matches("minhaSenha123", senhaHash); // retorna true
+     */
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(); // Bean que criptografa senhas usando BCrypt (recomendado para segurança)

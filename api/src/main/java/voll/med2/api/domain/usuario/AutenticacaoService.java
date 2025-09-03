@@ -13,10 +13,22 @@ public class AutenticacaoService implements UserDetailsService { // Implementa U
     @Autowired // Injeta automaticamente a dependência do repository
     private UsuarioRepository usuarioRepository; // Repositório para acessar dados de usuários no banco
 
-    @Autowired
-    private PasswordEncoder passwordEncoder; // injetando o codificador de senha
-
-    @Override // Sobrescreve o método da interface UserDetailsService
+    /**
+     * Implementação do metodo da interface UserDetailsService.
+     *
+     * Funcionalidade:
+     * - Recebe um username (login) e busca o usuário correspondente no banco.
+     * - Se o usuário existir, retorna um objeto que implementa UserDetails, contendo:
+     *      • login
+     *      • senha (hash)
+     *      • roles/permissões
+     * - Se não existir, lança UsernameNotFoundException (Spring Security trata adequadamente).
+     *
+     * Objetivo:
+     * Permitir que o Spring Security consiga autenticar e autorizar o usuário
+     * baseado nos dados carregados do banco.
+     */
+    @Override // Sobrescreve o metodo da interface UserDetailsService
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Busca o usuário pelo login no repositório e lança exceção se não existir
         return usuarioRepository.findByLogin(username)               // Consulta o usuário no banco

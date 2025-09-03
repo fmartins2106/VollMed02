@@ -24,6 +24,23 @@ public class AutenticacaoController {
     @Autowired
     private TokenService tokenService;
 
+
+    /**
+     * Endpoint POST /login para autenticação de usuários.
+     *
+     * Fluxo:
+     * 1. Recebe login e senha do usuário no corpo da requisição (DadosAutenticacao).
+     * 2. Cria um UsernamePasswordAuthenticationToken com as credenciais.
+     * 3. Chama o AuthenticationManager para autenticar o usuário:
+     *      - Se inválido → lança exceção e retorna erro.
+     *      - Se válido → retorna Authentication com o usuário autenticado.
+     * 4. Gera um token JWT para o usuário autenticado usando tokenService.gerarTokenJWT().
+     * 5. Retorna o token JWT dentro de um objeto DadosTokenJWT para o cliente.
+     *
+     * Objetivo:
+     * - Permitir que o cliente receba um token JWT após login bem-sucedido.
+     * - Esse token será usado nas requisições seguintes para autenticação.
+     */
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dadosAutenticacao){
         var authenticationToken = new UsernamePasswordAuthenticationToken(dadosAutenticacao.login(), dadosAutenticacao.senha());
