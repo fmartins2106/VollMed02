@@ -26,19 +26,8 @@ public class AutenticacaoService implements UserDetailsService { // Implementa U
     }
 
 
-    // Cadastro
-    public Usuario cadastrarUsuario(DadosCadastroUsuario dados) {
-        if (usuarioRepository.findByLogin(dados.login()).isPresent()) {
-            throw new IllegalArgumentException("Login já existe.");
-        }
 
-        Usuario usuario = Usuario.builder()
-                .login(dados.login())
-                .senha(passwordEncoder.encode(dados.senha()))
-                .build();
 
-        return usuarioRepository.save(usuario);
-    }
 
 
 }

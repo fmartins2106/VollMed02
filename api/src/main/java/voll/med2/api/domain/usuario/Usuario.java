@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +24,10 @@ public class Usuario implements UserDetails {
     private String login;
     private String senha;
 
-
+    public Usuario(DadosCadastroUsuario dadosCadastroUsuario, PasswordEncoder passwordEncoder) {
+        this.login = dadosCadastroUsuario.login();
+        this.senha = passwordEncoder.encode(dadosCadastroUsuario.senha()); // hash da senha
+    }
 
 
     @Override

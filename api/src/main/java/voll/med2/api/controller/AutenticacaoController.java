@@ -15,7 +15,7 @@ import voll.med2.api.infra.seguranca.DadosTokenJTW;
 import voll.med2.api.infra.seguranca.TokenService;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("login")
 public class AutenticacaoController {
 
     @Autowired
