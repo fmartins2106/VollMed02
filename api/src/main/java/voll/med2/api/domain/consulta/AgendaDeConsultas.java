@@ -1,9 +1,7 @@
-package voll.med2.api.domain.paciente;
+package voll.med2.api.domain.consulta;
 
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
-import voll.med2.api.domain.consulta.DadosAgendamentoConsulta;
-import voll.med2.api.domain.consulta.DadosDetalhamentoConsulta;
 
 @Service
 public class AgendaDeConsultas {
