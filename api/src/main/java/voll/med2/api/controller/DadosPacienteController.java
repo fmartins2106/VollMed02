@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import voll.med2.api.domain.medico.DadosDetalhamentoMedico;
 import voll.med2.api.domain.paciente.*;
 
 @RestController
@@ -49,5 +50,6 @@ public class DadosPacienteController {
         paciente.excluir();
         return ResponseEntity.noContent().build();
     }
+
 
 }
