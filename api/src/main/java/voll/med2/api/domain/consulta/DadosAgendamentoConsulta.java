@@ -13,6 +13,7 @@ public record DadosAgendamentoConsulta(
 
         @NotBlank(message = "Erro. Necessário informar o id do paciente.")
         Long idpaciente,
+
         @NotBlank(message = "Erro campo data da consulta não pode ser vazio  ou conter data inferior a data de hoje.")
         @Future
         LocalDateTime dataConsulta,
