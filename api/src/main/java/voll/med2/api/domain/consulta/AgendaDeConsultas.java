@@ -41,10 +41,10 @@ public class AgendaDeConsultas {
         validadorAgendamentoConsultas.forEach(v -> v.validar(dadosAgendamentoConsulta));
         var paciente = pacienteRepository.findById(dadosAgendamentoConsulta.idpaciente()).get();
         var medico = escolherMedico(dadosAgendamentoConsulta);
-        if (medico == null){
+        if (medico == null) {
             throw new ValidacaoException("Não existe médico disponível.");
         }
-        var consulta = new Consulta(null,medico,paciente,dadosAgendamentoConsulta.dataConsulta(),null);
+        var consulta = new Consulta(null, medico, paciente, dadosAgendamentoConsulta.dataConsulta(), null);
 
         consultaRepository.save(consulta);
         return new DadosDetalhamentoConsulta(consulta);
@@ -55,7 +55,7 @@ public class AgendaDeConsultas {
             return medicoRepository.getReferenceById(dadosAgendamentoConsulta.idpaciente());
         }
 
-        if (dadosAgendamentoConsulta == null){
+        if (dadosAgendamentoConsulta.especialidade() == null){
             throw new ValidacaoException("Especialidade é obrigatório quando o médico não for escolhido.");
         }
 
