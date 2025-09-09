@@ -49,5 +49,4 @@ public class AutenticacaoController {
         var TokenJWT = tokenService.gerarTokenJWT((Usuario) authentication.getPrincipal());
         return ResponseEntity.ok(new DadosTokenJTW(TokenJWT));
     }
-
 }

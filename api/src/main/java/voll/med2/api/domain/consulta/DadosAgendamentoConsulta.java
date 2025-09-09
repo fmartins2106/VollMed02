@@ -1,7 +1,6 @@
 package voll.med2.api.domain.consulta;
 
 import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import voll.med2.api.domain.medico.Especialidade;
 
@@ -14,9 +13,9 @@ public record DadosAgendamentoConsulta(
         Long idpaciente,
 
         @NotNull(message = "Erro campo data da consulta não pode ser vazio  ou conter data inferior a data de hoje.")
-        @Future
+        @Future(message = "Data e hora da consulta não pode ser inferior a data de hoje.")
         LocalDateTime dataConsulta,
 
-        @NotNull
+        @NotNull(message = "Campo especialidade não pode ser vazio.")
         Especialidade especialidade) {
 }

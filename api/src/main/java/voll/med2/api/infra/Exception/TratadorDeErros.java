@@ -1,13 +1,10 @@
 package voll.med2.api.infra.Exception;
 
-import jakarta.persistence.Access;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.cglib.core.Local;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,8 +13,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.xml.crypto.Data;
-import java.lang.reflect.Field;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
