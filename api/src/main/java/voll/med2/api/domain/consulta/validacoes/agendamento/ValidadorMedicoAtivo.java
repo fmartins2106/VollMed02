@@ -22,4 +22,6 @@ public class ValidadorMedicoAtivo implements ValidadorAgendamentoConsultas{
             throw new ValidacaoException("Consulta não pode ser agendada, médico inativo.");
         }
     }
+
+
 }

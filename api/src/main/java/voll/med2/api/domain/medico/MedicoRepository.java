@@ -16,16 +16,14 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
 
     @Query("""
-            select
-            m from Medico m
+            select m from Medico m
             where m.ativo = true
             and m.especialidade = :especialidade
-            and m.idmedico not in(
-                select
-                c.idmedico
+            and m.idmedico not in (
+                select c.medico.id
                 from Consulta c
                 where c.dataHoraConsulta = :dataHoraConsulta
-                and c.motivoCancelamento is null
+            and c.motivoCancelamento is null
             )
             order by random() limit 1
             """)
@@ -35,9 +33,11 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
     @Query("""
             select
-            .ativo
+            m.ativo
             from Medico m
-            where m.id = :id
+            where m.idmedico = :idmedico and m.ativo = true
             """)
     Boolean findAtivoById(Long idmedico);
+
+
 }

@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
 
-    boolean exitsByMedicoIdAndDataAndMotivoCancelamentoIsNull(Long idmedico, @NotNull(message = "Erro campo data da consulta não pode ser vazio  ou conter data inferior a data de hoje.") @Future(message = "Data e hora da consulta não pode ser inferior a data de hoje.") LocalDateTime localDateTime);
+
+    boolean existsByMedico_IdmedicoAndDataHoraConsultaAndMotivoCancelamentoIsNull(Long idmedico, @NotNull(message = "Erro campo data da consulta não pode ser vazio  ou conter data inferior a data de hoje.") @Future(message = "Data e hora da consulta não pode ser inferior a data de hoje.") LocalDateTime localDateTime);
 
     boolean existsByPacienteIdAndDataBetween(@NotNull(message = "Erro. Necessário informar o id do paciente.") Long idpaciente, LocalDateTime primeiroHorario, LocalDateTime ultimoHorario);
 }

@@ -1,12 +1,10 @@
 package voll.med2.api.domain.consulta;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import voll.med2.api.domain.medico.Especialidade;
 import voll.med2.api.domain.medico.Medico;
 import voll.med2.api.domain.paciente.Paciente;
 
@@ -38,7 +36,7 @@ public class Consulta {
     private MotivoCancelamento motivoCancelamento;
 
 
-    public void       cancelar(MotivoCancelamento motivoCancelamento) {
+    public void cancelar(MotivoCancelamento motivoCancelamento) {
         this.motivoCancelamento = motivoCancelamento;
     }
 }
