@@ -33,10 +33,6 @@ public class AgendaDeConsultas {
         if (!pacienteRepository.existsById(dadosAgendamentoConsulta.idpaciente())){
             throw new ValidacaoException("ID paciente informado não existe.");
         }
-        // Verifica se o médico informado existe no banco de dados
-        if (!medicoRepository.existsById(dadosAgendamentoConsulta.idmedico())){
-            throw new ValidacaoException("ID médico informato não existe.");
-        }
         // Executa uma lista de validadores customizados para checar regras de negócio
         validadorAgendamentoConsultas.forEach(v -> v.validar(dadosAgendamentoConsulta));
         // Recupera o paciente do banco pelo ID (já validado anteriormente)
@@ -63,6 +59,10 @@ public class AgendaDeConsultas {
         // Caso o ID de um médico tenha sido informado diretamente na requisição,
         // retorna esse médico sem precisar aplicar regras adicionais
         if (dadosAgendamentoConsulta.idmedico() != null){
+            // Verifica se o médico informado existe no banco de dados
+            if (!medicoRepository.existsById(dadosAgendamentoConsulta.idmedico())){
+                throw new ValidacaoException("ID médico informato não existe.");
+            }
             return medicoRepository.getReferenceById(dadosAgendamentoConsulta.idmedico());
         }
         // Se o médico não foi informado, mas também não veio a especialidade,

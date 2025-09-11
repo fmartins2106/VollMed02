@@ -22,12 +22,12 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             and m.idmedico not in (
                 select c.medico.id
                 from Consulta c
-                where c.dataHoraConsulta = :dataHoraConsulta
+                where c.dataConsulta = :dataConsulta
             and c.motivoCancelamento is null
             )
             order by random() limit 1
             """)
-    Medico escolherMedicoAleatorioLivreNaData(@NotNull Especialidade especialidade, @NotBlank(message = "Erro campo data da consulta não pode ser vazio  ou conter data inferior a data de hoje.") @Future LocalDateTime data);
+    Medico escolherMedicoAleatorioLivreNaData(@NotNull Especialidade especialidade, @NotBlank(message = "Erro campo data da consulta não pode ser vazio  ou conter data inferior a data de hoje.") @Future LocalDateTime dataConsulta);
 
 
 

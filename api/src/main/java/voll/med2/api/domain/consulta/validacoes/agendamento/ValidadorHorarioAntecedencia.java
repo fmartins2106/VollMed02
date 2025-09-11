@@ -2,6 +2,7 @@ package voll.med2.api.domain.consulta.validacoes.agendamento;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Component;
 import voll.med2.api.domain.ValidacaoException;
 import voll.med2.api.domain.consulta.ConsultaRepository;
@@ -24,5 +25,6 @@ public class ValidadorHorarioAntecedencia implements ValidadorAgendamentoConsult
             throw new ValidacaoException("Consulta deve ser agendada com 30 minutos de antecedência.");
         }
     }
+
 
 }

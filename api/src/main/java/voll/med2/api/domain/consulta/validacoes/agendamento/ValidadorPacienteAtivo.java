@@ -16,12 +16,10 @@ public class ValidadorPacienteAtivo implements ValidadorAgendamentoConsultas{
     public void validar(DadosAgendamentoConsulta dadosAgendamentoConsulta) {
         var pacienteAtivo = pacienteRepository.findAtivoById(dadosAgendamentoConsulta.idpaciente());
 
-        if (pacienteAtivo == null) {
-            throw new ValidacaoException("ID paciente informado não existe.");
-        }
-
         if (!pacienteAtivo) {
             throw new ValidacaoException("Consulta não pode ser agendada com paciente inativo.");
         }
     }
+
+
 }

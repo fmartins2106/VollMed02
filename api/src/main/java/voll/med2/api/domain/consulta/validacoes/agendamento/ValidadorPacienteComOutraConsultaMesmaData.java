@@ -14,11 +14,13 @@ public class ValidadorPacienteComOutraConsultaMesmaData implements ValidadorAgen
 
     @Override
     public void validar(DadosAgendamentoConsulta dadosAgendamentoConsulta) {
-        var primeiroHorario = dadosAgendamentoConsulta.dataConsulta().withHour(7);
-        var ultimoHorario = dadosAgendamentoConsulta.dataConsulta().withHour(18);
-        var pacientePossuiOutraConsultaNoDia = consultaRepository.existsByPacienteIdAndDataBetween(dadosAgendamentoConsulta.idpaciente(), primeiroHorario, ultimoHorario);
+        var idpaciente = dadosAgendamentoConsulta.idpaciente();
+        var dataConsulta = dadosAgendamentoConsulta.dataConsulta();
+        var pacientePossuiOutraConsultaNoDia = consultaRepository.existsByPaciente_IdpacienteAndDataConsultaAndMotivoCancelamentoIsNull(idpaciente, dataConsulta);
         if (pacientePossuiOutraConsultaNoDia) {
             throw new ValidacaoException("Paciente já possui uma consulta agendada nesse dia.");
         }
     }
+
+
 }

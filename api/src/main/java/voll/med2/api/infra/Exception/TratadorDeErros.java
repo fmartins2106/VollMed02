@@ -1,5 +1,6 @@
 package voll.med2.api.infra.Exception;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.springframework.cglib.core.Local;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import voll.med2.api.domain.paciente.DadosAtualizacaoPaciente;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
@@ -47,7 +49,7 @@ public class TratadorDeErros {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> tratarErro400(MethodArgumentNotValidException exception){
         var erro = exception.getFieldErrors().stream().map(DadosErroValidacao::new).toList();
-        return ResponseEntity.ok(erro);
+        return ResponseEntity.badRequest().body(erro);
     }
 
     @ExceptionHandler(HttpMessageConversionException.class)
@@ -88,13 +90,20 @@ public class TratadorDeErros {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErroResponse> tratarBadCredentials(BadCredentialsException exception){
+    public ResponseEntity<ErroResponse> tratarErro401(BadCredentialsException exception){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(new ErroResponse(401,"Unauthorized",
                         "Login ou senha inválidos", LocalDateTime.now()));
     }
 
     //------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
 }
 
