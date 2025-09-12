@@ -40,4 +40,18 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     Boolean findAtivoById(Long idmedico);
 
 
+    @Query("""
+            select
+            m.ativo
+            from Medico M
+            where m.ativo = true
+            and m.especialidade = :especialidade
+            and m.idmedico  not in (
+            select
+            c.medico.idmedico
+            from consultas c
+            where c.dataConsulta = :dataConsulta and c.motivoCancelamento is not null
+            ) order by Random() limit 1
+            """)
+    Medico escolherMedicoAleatorioLivreNaData02(Long idmedico, @NotNull(message = "Erro campo data da consulta não pode ser vazio  ou conter data inferior a data de hoje.") @Future(message = "Data e hora da consulta não pode ser inferior a data de hoje.") LocalDateTime localDateTime);
 }

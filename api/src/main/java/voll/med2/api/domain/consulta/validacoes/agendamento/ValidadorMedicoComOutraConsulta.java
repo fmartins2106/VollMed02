@@ -21,4 +21,5 @@ public class ValidadorMedicoComOutraConsulta implements ValidadorAgendamentoCons
     }
 
 
+
 }
