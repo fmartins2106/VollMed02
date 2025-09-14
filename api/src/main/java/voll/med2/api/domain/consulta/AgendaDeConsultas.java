@@ -33,8 +33,9 @@ public class AgendaDeConsultas {
         if (!pacienteRepository.existsById(dadosAgendamentoConsulta.idpaciente())){
             throw new ValidacaoException("ID paciente informado não existe.");
         }
-        // Executa uma lista de validadores customizados para checar regras de negócio
-        validadorAgendamentoConsultas.forEach(v -> v.validar(dadosAgendamentoConsulta));
+        if (dadosAgendamentoConsulta.idmedico() != null && !medicoRepository.existsById(dadosAgendamentoConsulta.idmedico())) {
+            throw new ValidacaoException("Id do medico informado não existe.");
+        }
         // Recupera o paciente do banco pelo ID (já validado anteriormente)
         var paciente = pacienteRepository.findById(dadosAgendamentoConsulta.idpaciente()).get();
         // Escolhe o médico que atenderá a consulta (pode ser baseado em regras de disponibilidade, especialidade, etc.)
@@ -43,6 +44,8 @@ public class AgendaDeConsultas {
         if (medico == null) {
             throw new ValidacaoException("Não existe médico disponível.");
         }
+        // Executa uma lista de validadores customizados para checar regras de negócio
+        validadorAgendamentoConsultas.forEach(v -> v.validar(dadosAgendamentoConsulta));
         // Cria uma nova entidade "Consulta" preenchendo:
         // - ID nulo (será gerado automaticamente pelo banco)
         // - médico escolhido
@@ -78,7 +81,6 @@ public class AgendaDeConsultas {
                 dadosAgendamentoConsulta.dataConsulta()
         );
     }
-
 
     public void cancelarConsulta(DadosCancelamentoConsulta dadosCancelamentoConsulta){
         // Verifica se a consulta informada existe no banco de dados
