@@ -22,5 +22,4 @@ public class ValidadorPacienteAtivo implements ValidadorAgendamentoConsultas{
     }
 
 
-
 }

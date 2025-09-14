@@ -8,7 +8,7 @@ import voll.med2.api.domain.consulta.DadosAgendamentoConsulta;
 
 import java.time.DayOfWeek;
 
-@Component()
+@Component
 public class ValidadorHOrarioFuncionamentoClinica implements ValidadorAgendamentoConsultas{
 
     @Autowired
@@ -25,11 +25,6 @@ public class ValidadorHOrarioFuncionamentoClinica implements ValidadorAgendament
             throw new ValidacaoException("COnsulta fora do horário de funcionamento da cliníca.");
         }
     }
-
-
-
-
-
 
 
 

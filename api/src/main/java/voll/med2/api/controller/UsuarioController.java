@@ -49,12 +49,5 @@ public class UsuarioController {
         // Retorna 201 Created sem expor senha
         return ResponseEntity.created(uri).build();
     }
-
-
-
-
-
-
-
 }
 

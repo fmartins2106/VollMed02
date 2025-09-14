@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import voll.med2.api.domain.consulta.DadosAgendamentoConsulta;
 
 import java.time.LocalDateTime;
 
@@ -40,18 +41,4 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     boolean findAtivoById(Long idmedico);
 
 
-    @Query("""
-            select
-            m from Medico m
-            where ativo = true
-            and m.idmedico not in (
-            select
-            c.medico.idmedico
-            from consultas c
-            where c.dataConsulta = :dataConsulta and c.motivo_cancelamento is not null
-            ) order by Random() limit 1
-            """)
-    Medico escolherMedicoAleatorioLivreNaData02(@NotNull(message = "Campo especialidade é obrigatório") Especialidade especialidade, @NotNull(message = "Campo data consulta não pode ser vazio.") @Future(message = "Campo data não pode ser difinido com data inferior a data atual.") LocalDateTime localDateTime);
-
-
-    }
+}
