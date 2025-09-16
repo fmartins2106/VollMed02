@@ -18,6 +18,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import voll.med2.api.domain.paciente.DadosAtualizacaoPaciente;
 
+import javax.xml.crypto.Data;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 
@@ -32,19 +33,6 @@ public class TratadorDeErros {
 
     private record ErroResponse(int status, String erro, String mensagem, LocalDateTime timeStamp){
 
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErroResponse> tratarErro404(EntityNotFoundException exception){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErroResponse(404,"Nof Found",exception.getMessage(), LocalDateTime.now()));
-    }
-
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ErroResponse> tratarRotaNaoEncontradao404(NoHandlerFoundException exception){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErroResponse(404,"Not Found","Rota inexistente"+exception.getRequestURL()
-                , LocalDateTime.now()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -68,17 +56,38 @@ public class TratadorDeErros {
                 ,LocalDateTime.now()));
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErroResponse> tratarErro409(DataIntegrityViolationException exception){
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ErroResponse(409,"Conflict","Erro violação de dados"
-                ,LocalDateTime.now()));
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErroResponse> tratarErro401(BadCredentialsException exception){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(new ErroResponse(401,"Unauthorized",
+                        "Login ou senha inválidos", LocalDateTime.now()));
     }
+
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErroResponse> tratarErro403(AccessDeniedException exception){
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new ErroResponse(403,"Forbidden","Acesso negado"
+                        ,LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErroResponse> tratarErro404(EntityNotFoundException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErroResponse(404,"Nof Found",exception.getMessage(), LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErroResponse> tratarRotaNaoEncontradao404(NoHandlerFoundException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErroResponse(404,"Not Found","Rota inexistente"+exception.getRequestURL()
+                        , LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErroResponse> tratarErro409(DataIntegrityViolationException exception){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErroResponse(409,"Conflict","Erro violação de dados"
                 ,LocalDateTime.now()));
     }
 
@@ -89,15 +98,6 @@ public class TratadorDeErros {
                         "Erro inesperado - "+exception.getMessage()
                 ,LocalDateTime.now()));
     }
-
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErroResponse> tratarErro401(BadCredentialsException exception){
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new ErroResponse(401,"Unauthorized",
-                        "Login ou senha inválidos", LocalDateTime.now()));
-    }
-
-    //------------------------------------------------------------------------------------
 
 
 }

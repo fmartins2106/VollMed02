@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import voll.med2.api.domain.ValidacaoException;
 import voll.med2.api.domain.consulta.ConsultaRepository;
+import voll.med2.api.domain.consulta.DadosAgendamentoConsulta;
 import voll.med2.api.domain.consulta.DadosCancelamentoConsulta;
 
 import java.time.Duration;
@@ -24,5 +25,6 @@ public class ValidadorHorarioAntecedencia implements ValidadorCancelamentoConsul
             throw new ValidacaoException("Consulta somente pode ser cancelada com antecedência mínima de 24h!");
         }
     }
+
 
 }

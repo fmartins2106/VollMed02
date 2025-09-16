@@ -28,6 +28,4 @@ public class ValidadorHOrarioFuncionamentoClinica implements ValidadorAgendament
 
 
 
-
-
 }

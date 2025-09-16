@@ -20,6 +20,4 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
             """)
     Boolean findAtivoById(@NotNull(message = "Erro. Necessário informar o id do paciente.") Long idpaciente);
 
-
-
 }

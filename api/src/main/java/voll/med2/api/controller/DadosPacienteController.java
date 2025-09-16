@@ -1,5 +1,6 @@
 package voll.med2.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import voll.med2.api.domain.paciente.*;
 
 @RestController
 @RequestMapping("pacientes")
+@SecurityRequirement(name = "Bearer-key")
 public class DadosPacienteController {
 
     @Autowired
