@@ -24,6 +24,4 @@ public class ValidadorPacienteComOutraConsultaMesmaData implements ValidadorAgen
 
 
 
-
-
 }

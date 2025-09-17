@@ -26,5 +26,4 @@ public class ValidadorHorarioAntecedencia implements ValidadorCancelamentoConsul
         }
     }
 
-
 }

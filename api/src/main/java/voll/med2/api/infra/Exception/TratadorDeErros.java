@@ -1,5 +1,6 @@
 package voll.med2.api.infra.Exception;
 
+import jakarta.persistence.Access;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.coyote.BadRequestException;
@@ -98,6 +99,27 @@ public class TratadorDeErros {
                         "Erro inesperado - "+exception.getMessage()
                 ,LocalDateTime.now()));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

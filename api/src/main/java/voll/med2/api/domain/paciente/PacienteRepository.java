@@ -18,6 +18,14 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
             from Paciente p
             where p.idpaciente = :idpaciente and p.ativo = true
             """)
-    Boolean findAtivoById(@NotNull(message = "Erro. Necessário informar o id do paciente.") Long idpaciente);
+    boolean findAtivoById(@NotNull(message = "Erro. Necessário informar o id do paciente.") Long idpaciente);
 
+
+    @Query("""
+            SELECT
+            p.ativo
+            from Paciente p
+            where p.ativo = true and m.idpaciente = :idpaciente
+            """)
+    boolean findAtivoById02(@NotNull(message = "Erro. Necessário informar o id do paciente.") Long idpaciente);
 }
