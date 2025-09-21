@@ -1,6 +1,5 @@
 package voll.med2.api.controller;
 
-import jakarta.validation.constraints.NotNull;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,14 +14,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import voll.med2.api.domain.consulta.*;
-import voll.med2.api.domain.endereco.DadosEndereco;
-import voll.med2.api.domain.endereco.Endereco;
-import voll.med2.api.domain.medico.*;
+import voll.med2.api.domain.medico.Especialidade;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -54,7 +50,7 @@ class ConsultaControllerTest {
     @DisplayName("Deveria devolver código http 400 quando informações estão inválidas.")
     @WithMockUser
     void agendar_cenario01() throws Exception {
-        var response = mockMvc.perform(post("/medicos"))
+        var response = mockMvc.perform(post("/consultas"))
                 .andReturn().getResponse();
         assertThat(response.getStatus())
                 .isEqualTo(HttpStatus.BAD_REQUEST.value());
