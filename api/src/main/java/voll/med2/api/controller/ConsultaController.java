@@ -3,7 +3,6 @@ package voll.med2.api.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,11 @@ public class ConsultaController {
         return ResponseEntity.ok(consulta);
     }
 
-
-
+    @DeleteMapping
+    @Transactional
+    public ResponseEntity cancelamentoConsulta(@RequestBody @Valid DadosCancelamentoConsulta dadosCancelamentoConsulta){
+        agendaDeConsultas.cancelarConsulta(dadosCancelamentoConsulta);
+        return ResponseEntity.noContent().build();
+    }
 
 }

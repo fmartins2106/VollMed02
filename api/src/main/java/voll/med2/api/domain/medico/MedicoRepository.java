@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import voll.med2.api.domain.consulta.DadosAgendamentoConsulta;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
@@ -44,28 +45,4 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
 
 
-
-    @Query("""
-            select m
-            from Medico m
-            where m.ativo = true
-            and m.especialidade = :especialidade
-            and m.idmedico = :idmedico not in(
-            select
-            c.medico.idmedico
-            from Consulta c
-            where c.dataConsulta = :dataConsulta
-            and c.motivoCancelamento is null
-            ) order by Random() limit 1
-            """)
-    Medico escolherMedicoAleatorioLivreNaData02(@NotNull(message = "Campo especialidade não pode ser vazio.") Especialidade especialidade, @NotNull(message = "Campo data consulta não pode ser vazio.") @Future(message = "Data da consulta não pode ser inferior a data de hoje.") LocalDateTime localDateTime);
-
-
-    @Query("""
-            select
-            m.ativo
-            from Medico m
-            where m.ativo = true and m.idmedico = :idmedico
-            """)
-    boolean findAtivoById02(Long idmedico);
 }

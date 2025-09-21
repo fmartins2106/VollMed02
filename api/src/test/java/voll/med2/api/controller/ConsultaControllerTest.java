@@ -50,7 +50,6 @@ class ConsultaControllerTest {
     private AgendaDeConsultas agendaDeConsultas;
 
 
-
     @Test
     @DisplayName("Deveria devolver código http 400 quando informações estão inválidas.")
     @WithMockUser

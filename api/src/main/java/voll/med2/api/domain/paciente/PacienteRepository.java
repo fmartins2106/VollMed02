@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     Page<Paciente> findAllByAtivoTrue(Pageable pageable);
@@ -22,10 +24,10 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
 
     @Query("""
-            SELECT
-            p.ativo
+            select
+            m
             from Paciente p
-            where p.ativo = true and m.idpaciente = :idpaciente
+            where p.idpaciente = :idpaciente and p.ativo = true;
             """)
-    boolean findAtivoById02(@NotNull(message = "Erro. Necessário informar o id do paciente.") Long idpaciente);
+    Optional<Paciente> findByIdPacienteAtivo(@NotNull(message = "Erro. Necessário informar o id do paciente.") Long idpaciente);
 }

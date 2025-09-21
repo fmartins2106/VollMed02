@@ -21,6 +21,7 @@ import voll.med2.api.domain.paciente.DadosAtualizacaoPaciente;
 
 import javax.xml.crypto.Data;
 import java.nio.file.AccessDeniedException;
+import java.security.AccessControlException;
 import java.time.LocalDateTime;
 
 @RestControllerAdvice
@@ -99,28 +100,6 @@ public class TratadorDeErros {
                         "Erro inesperado - "+exception.getMessage()
                 ,LocalDateTime.now()));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
