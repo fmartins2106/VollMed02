@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record DadosAutenticacao(
-        @NotBlank String login,
-        @NotBlank String senha) {
+        @NotBlank(message = "Digite o email.")
+        String login,
+        @NotBlank(message = "Digite a senha.")
+        String senha) {
 }

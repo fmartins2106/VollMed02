@@ -1,17 +1,16 @@
 package voll.med2.api.controller;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import voll.med2.api.domain.usuario.DadosCadastroUsuario;
-import voll.med2.api.domain.usuario.Usuario;
-import voll.med2.api.domain.usuario.UsuarioRepository;
+import voll.med2.api.domain.usuario.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("usuarios")
@@ -21,6 +20,15 @@ public class UsuarioController {
 
    @Autowired
    private PasswordEncoder passwordEncoder;
+
+    @PreAuthorize("hasRole('MASTER')")
+    @PutMapping("/{id}/roles")
+    @Transactional
+    public ResponseEntity<Void> atualizarRoles(@PathVariable Long id,@RequestBody @Valid DadosAtualizacaoRoles dados) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        usuario.atualizarRoles(dados.roles());
+        return ResponseEntity.ok().build();
+    }
 
 
     /**
@@ -49,5 +57,50 @@ public class UsuarioController {
         // Retorna 201 Created sem expor senha
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<Void> atualizarDadosUsuario(@RequestBody @Valid DadosAtualizacaoUsuario dados) {
+        var usuario = usuarioRepository.getReferenceById(dados.idusuario());
+        usuario.atualizarDadosUsuario(dados);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/email")
+    @Transactional
+    public ResponseEntity<Void> atualizarEmail(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoEmail dados) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        usuario.atualizarEmail(dados.novoEmail(), dados.novaSenha(), passwordEncoder);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}/senha")
+    @Transactional
+    public ResponseEntity<Void> atualizarSenha(@PathVariable Long id, @RequestBody @Valid DadosAtualizacaoSenha dados) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        usuario.atualizarSenha(dados.novaSenha(), passwordEncoder);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/desbloquear/{id}")
+    @Transactional
+    public ResponseEntity desbloquear(@PathVariable Long id) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        usuario.desbloquearUsuario();
+        return ResponseEntity.ok().build();
+    }
+
+    // Desbloqueio com renovação automática das datas
+    @PutMapping("/desbloquear-com-renovacao/{id}")
+    @Transactional
+    public ResponseEntity<Void> desbloquearComRenovacao(@PathVariable Long id) {
+        var usuario = usuarioRepository.getReferenceById(id);
+        usuario.desbloquearUsuarioComRenovacao();
+        return ResponseEntity.ok().build();
+    }
+
+
+
+
 }
 

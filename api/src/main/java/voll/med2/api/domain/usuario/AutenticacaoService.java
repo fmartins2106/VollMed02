@@ -7,12 +7,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException; 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service; // Marca a classe como um Service do Spring (bean gerenciado)
 
+import java.time.LocalDateTime;
+
 @Service // Informa ao Spring que esta classe é um serviço e deve ser gerenciada como bean
 public class AutenticacaoService implements UserDetailsService { // Implementa UserDetailsService para autenticação
 
     @Autowired // Injeta automaticamente a dependência do repository
     private UsuarioRepository usuarioRepository; // Repositório para acessar dados de usuários no banco
 
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     /**
      * Implementação do metodo da interface UserDetailsService.
      *
@@ -36,9 +41,6 @@ public class AutenticacaoService implements UserDetailsService { // Implementa U
                         "Usuário não encontrado: " + username));
         // Retorna o usuário encontrado, que implementa UserDetails
     }
-
-
-
 
 
 

@@ -101,5 +101,7 @@ public class TratadorDeErros {
                 ,LocalDateTime.now()));
     }
 
+
+
 }
 
