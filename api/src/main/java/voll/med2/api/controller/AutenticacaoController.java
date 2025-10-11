@@ -5,24 +5,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+import voll.med2.api.domain.autenticacao.AutenticacaoService;
+import voll.med2.api.domain.autenticacao.DadosRefreshToken;
 import voll.med2.api.domain.usuario.DadosAutenticacao;
 import voll.med2.api.domain.usuario.Usuario;
-import voll.med2.api.infra.seguranca.DadosTokenJTW;
+import voll.med2.api.domain.autenticacao.DadosTokenJTW;
 import voll.med2.api.infra.seguranca.TokenService;
 
 @RestController
 @RequestMapping("login")
 public class AutenticacaoController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+   private final AutenticacaoService autenticacaoService;
 
-    @Autowired
-    private TokenService tokenService;
+    public AutenticacaoController(AutenticacaoService autenticacaoService) {
+        this.autenticacaoService = autenticacaoService;
+    }
 
 
     /**
@@ -42,11 +42,14 @@ public class AutenticacaoController {
      * - Esse token será usado nas requisições seguintes para autenticação.
      */
     @PostMapping
-    public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dadosAutenticacao){
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dadosAutenticacao.login(), dadosAutenticacao.senha());
-        var authentication = authenticationManager.authenticate(authenticationToken);
+    public ResponseEntity<DadosTokenJTW> efetuarLogin(@RequestBody @Valid DadosAutenticacao dadosAutenticacao){
+        var token = autenticacaoService.autenticacaoUsuario(dadosAutenticacao);
+        return ResponseEntity.ok(token);
+    }
 
-        var TokenJWT = tokenService.gerarTokenJWT((Usuario) authentication.getPrincipal());
-        return ResponseEntity.ok(new DadosTokenJTW(TokenJWT));
+    @PostMapping("atualizar-token")
+    public ResponseEntity<DadosTokenJTW> atualizarLogin(@RequestBody @Valid DadosRefreshToken dadosRefreshToken){
+        var tokenAtualizado = autenticacaoService.atualizarToken(dadosRefreshToken);
+        return ResponseEntity.ok(tokenAtualizado);
     }
 }
