@@ -21,16 +21,6 @@ public class UsuarioController {
    @Autowired
    private PasswordEncoder passwordEncoder;
 
-    @PreAuthorize("hasRole('MASTER')")
-    @PutMapping("/{id}/roles")
-    @Transactional
-    public ResponseEntity<Void> atualizarRoles(@PathVariable Long id,@RequestBody @Valid DadosAtualizacaoRoles dados) {
-        var usuario = usuarioRepository.getReferenceById(id);
-        usuario.atualizarRoles(dados.roles());
-        return ResponseEntity.ok().build();
-    }
-
-
     /**
      * Endpoint POST /usuarios para cadastro de novos usuários.
      *
@@ -53,7 +43,7 @@ public class UsuarioController {
         // Salva no banco
         usuarioRepository.save(usuario);
         // Cria a URI para o recurso recém-criado
-        var uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getIdusuario()).toUri();
+        var uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
         // Retorna 201 Created sem expor senha
         return ResponseEntity.created(uri).build();
     }

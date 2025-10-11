@@ -101,6 +101,20 @@ public class TokenService {
         }
     }
 
+    public String refreshToken(Usuario usuario){ // Método privado que gera o token JWT para um usuário
+        System.out.println(secret); // Imprime no console a chave secreta (geralmente usado só para debug)
+        try {
+            var algoritimo = Algorithm.HMAC256(secret); // Cria o algoritmo HMAC com a chave secreta
+            return JWT.create() // Inicia a construção do token
+                    .withIssuer("API Med_voll.") // Define o emissor do token (quem está gerando)
+                    .withSubject(usuario.getLogin()) // Define o "dono" do token (usuário autenticado)
+                    .withExpiresAt(dataExpiracao()) // Define a data de expiração do token
+                    .sign(algoritimo); // Assina o token com o algoritmo e a chave secreta
+        }catch (JWTCreationException exception){ // Captura erro de criação do token
+            throw new RuntimeException("Erro ao gerar o token.",exception); // Lança exceção customizada
+        }
+    }
+
 
 
 

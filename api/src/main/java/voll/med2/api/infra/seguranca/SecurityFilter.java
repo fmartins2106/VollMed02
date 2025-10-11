@@ -7,8 +7,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import voll.med2.api.domain.usuario.Usuario;
 import voll.med2.api.domain.usuario.UsuarioRepository;
 
 import java.io.IOException;
@@ -35,14 +37,15 @@ public class SecurityFilter extends OncePerRequestFilter {
         // Apenas para debug: imprime no console o token recebido
         if (tokenJWT != null && !tokenJWT.isBlank()) {
             // Valida o token e obtém o "subject" (login do usuário dentro do token)
-            var subject = tokenService.getSuject(tokenJWT);
+            var email = tokenService.getSuject(tokenJWT);
             // Busca o usuário no banco pelo login recuperado do token
-            var usuario = usuarioRepository.findByLogin(subject);
+            Usuario usuario = usuarioRepository.findByEmailIgnoreCaseAndVerificadoTrue(email)
+                    .orElseThrow(() -> new UsernameNotFoundException("Email não encontrado."));
             // Cria um objeto de autenticação do Spring Security com:
             // - principal: o usuário
             // - credentials: null (não precisamos da senha aqui)
             // - authorities: permissões do usuário
-            var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.get().getAuthorities());
+            var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
             // Define a autenticação no contexto do Spring Security
             // Isso permite que endpoints protegidos reconheçam o usuário como autenticado
             SecurityContextHolder.getContext().setAuthentication(authentication);

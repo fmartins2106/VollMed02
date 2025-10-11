@@ -76,20 +76,20 @@ public class TratadorDeErros {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErroResponse> tratarErro404(EntityNotFoundException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErroResponse(404,"Nof Found",exception.getMessage(), LocalDateTime.now()));
+                .body(new ErroResponse(404,"Nof Found", exception.getMessage(), LocalDateTime.now()));
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ErroResponse> tratarRotaNaoEncontradao404(NoHandlerFoundException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErroResponse(404,"Not Found","Rota inexistente"+exception.getRequestURL()
+                .body(new ErroResponse(404,"Not Found", "Rota inexistente"+exception.getRequestURL()
                         , LocalDateTime.now()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErroResponse> tratarErro409(DataIntegrityViolationException exception){
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ErroResponse(409,"Conflict","Erro violação de dados"
+                .body(new ErroResponse(409,"Conflict", "Erro violação de dados"
                 ,LocalDateTime.now()));
     }
 
