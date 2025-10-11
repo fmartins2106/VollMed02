@@ -10,12 +10,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import voll.med2.api.domain.perfil.Perfil;
+import voll.med2.api.domain.perfil.Perfilnome;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Entity(name = "Usuario")
 @Table(name = "usuarios")
@@ -51,10 +49,15 @@ public class Usuario implements UserDetails {
     private LocalDateTime expiracaoToken;
 
 
-
-    public Usuario(DadosCadastroUsuario dadosCadastroUsuario, PasswordEncoder passwordEncoder) {
+    public Usuario(DadosCadastroUsuario dadosCadastroUsuario, String senhaCriptografada, Perfil perfil) {
+        this.nomeCompleto = dadosCadastroUsuario.nomeCompleto();
         this.login = dadosCadastroUsuario.login();
-        this.senha = passwordEncoder.encode(dadosCadastroUsuario.senha()); // hash da senha
+        this.senha = senhaCriptografada;
+        this.ativo = false;
+        this.verificado = false;
+        this.token = UUID.randomUUID().toString();
+        this.expiracaoToken = LocalDateTime.now().plusMinutes(5);
+        this.perfis.add(perfil);
     }
 
 
@@ -71,5 +74,31 @@ public class Usuario implements UserDetails {
     @Override
     public String getUsername() {
         return login;
+    }
+
+    public void atualizarNome(DadosAtualizacaoUsuario dadosAtualizacaoUsuario) {
+        this.nomeCompleto = dadosAtualizacaoUsuario.nomeCompleto();
+    }
+
+    public void atualizarSenha(String senhaCriptografada) {
+        this.senha = senhaCriptografada;
+    }
+
+    public void validacaoTokenEmail() {
+        this.verificado = true;
+        this.ativo = true;
+    }
+
+    public void addPerfil(Perfil perfil) {
+        this.perfis.add(perfil);
+    }
+
+    public void inativarCadastro() {
+        this.ativo = false;
+    }
+
+
+    public void ativarCadastro() {
+        this.ativo = true;
     }
 }

@@ -5,12 +5,7 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 public record DadosAtualizacaoUsuario(
-        @NotNull
-        Long idusuario,
-
-        Boolean bloqueado,
-
-        @NotNull
-        @Future(message = "Data da expiração não pode ser menor que a data atual.")
-        LocalDateTime expiracaoConta) {
+        @NotBlank(message = "Erro. Digite o nome completo.")
+        @Pattern(regexp = "^[\\p{L}]+( [\\p{L}]+)+$")
+        String nomeCompleto) {
 }

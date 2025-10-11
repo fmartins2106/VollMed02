@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService; // Inte
 import org.springframework.security.core.userdetails.UsernameNotFoundException; // Exceção lançada se usuário não for encontrado
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service; // Marca a classe como um Service do Spring (bean gerenciado)
-import voll.med2.api.domain.usuario.DadosAutenticacao;
 import voll.med2.api.domain.usuario.Usuario;
 import voll.med2.api.domain.usuario.UsuarioRepository;
 import voll.med2.api.infra.seguranca.TokenService;

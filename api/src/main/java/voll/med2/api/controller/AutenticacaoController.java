@@ -1,18 +1,12 @@
 package voll.med2.api.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import voll.med2.api.domain.autenticacao.AutenticacaoService;
 import voll.med2.api.domain.autenticacao.DadosRefreshToken;
-import voll.med2.api.domain.usuario.DadosAutenticacao;
-import voll.med2.api.domain.usuario.Usuario;
+import voll.med2.api.domain.autenticacao.DadosAutenticacao;
 import voll.med2.api.domain.autenticacao.DadosTokenJTW;
-import voll.med2.api.infra.seguranca.TokenService;
 
 @RestController
 @RequestMapping("login")
