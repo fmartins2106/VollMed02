@@ -3,12 +3,10 @@ package voll.med2.api.domain.usuario;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import voll.med2.api.domain.ValidacaoException;
-import voll.med2.api.domain.perfil.DadosPefil;
-import voll.med2.api.domain.perfil.Perfil;
+import voll.med2.api.domain.perfil.DadosPerfil;
 import voll.med2.api.domain.perfil.PerfilRepository;
 import voll.med2.api.domain.perfil.Perfilnome;
 import voll.med2.api.infra.email.EmailService;
@@ -41,18 +39,18 @@ public class UsuarioService {
         return usuario;
     }
 
-    @Transactional
+
     public Page<DadosListagemUsuarios> listarUsuariosCadastrados(Pageable pageable){
         return usuarioRepository.findByAtivoTrue(pageable).map(DadosListagemUsuarios::new);
     }
 
-    @Transactional
+
     public Usuario pesquisaPorNome(String nomeCompleto){
         return usuarioRepository.findByNomeCompleto(nomeCompleto)
                 .orElseThrow(() -> new RuntimeException("Nome não encontrado."));
     }
 
-    @Transactional
+
     public Usuario pesquisaPorId(Long id){
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ID não encontrado. Tente novamente."));
@@ -83,36 +81,30 @@ public class UsuarioService {
         var usuario = usuarioRepository.findByToken(codigo)
                         .orElseThrow(() -> new RuntimeException("Token inválido ou expirado."));
         usuario.validacaoTokenEmail();
+        usuarioRepository.save(usuario);
     }
 
 
     @Transactional
-    public Usuario addPerfilUsuario(Usuario logado, Long id, DadosPefil dadosPefil){
+    public void addPerfilUsuario(Long id, DadosPerfil dadosPefil){
         var usuario = pesquisaPorId(id);
-        if (hierarquiaService.usuarioNaoTemPermissaoAddPerfil(logado, "ROLE_ADMINISTRADOR")){
-            throw new ValidacaoException("Usuário sem permissão para efetuar este comando.");
-        }
         var perfil = perfilRepository.findByNome(dadosPefil.perfilnome());
         usuario.addPerfil(perfil);
-        return usuario;
+        usuarioRepository.save(usuario);
     }
 
     @Transactional
-    public void inativarCadastro(Usuario logado, Long id){
+    public void inativarCadastro(Long id){
         var usuario = pesquisaPorId(id);
-        if (hierarquiaService.usuarioNaoTemPermissaoAddPerfil(logado, "ROLE_ADMINISTRADOR")){
-            throw new ValidacaoException("Usuário sem permissão para efetuar este comando.");
-        }
         usuario.inativarCadastro();
+        usuarioRepository.save(usuario);
     }
 
     @Transactional
-    public void ativarCadastro(Usuario logado, Long id){
+    public void ativarCadastro(Long id){
         var usuario = pesquisaPorId(id);
-        if (hierarquiaService.usuarioNaoTemPermissaoAddPerfil(logado, "ROLE_ADMINISTRADOR")){
-            throw new ValidacaoException("Usuário sem permissão para efetuar este comando.");
-        }
         usuario.ativarCadastro();
+        usuarioRepository.save(usuario);
     }
 
 
