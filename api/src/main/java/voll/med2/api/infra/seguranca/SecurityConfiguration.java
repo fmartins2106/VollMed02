@@ -3,6 +3,9 @@ package voll.med2.api.infra.seguranca;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -46,10 +49,18 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable()) // Desativa proteção CSRF, útil para APIs REST stateless
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Define que a aplicação não mantém sessão (API REST stateless)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login").permitAll(); // Permite acesso público a /path
-                    auth.requestMatchers("/usuarios").permitAll();
+                    auth.requestMatchers("/atualizar-token","/login", "/cadastrar", "/validacao-email-token").permitAll(); // Permite acesso público a /path
                     auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll(); // Permite acesso público à documentação Swagger
-                    auth.anyRequest().authenticated(); // Todas as outras requisições precisam estar autenticadas
+                    auth.requestMatchers(HttpMethod.GET,"/listar-usuarios**").hasRole("ADMINISTRADOR");
+                    auth.requestMatchers(HttpMethod.PUT, "/atualizar-dados", "atualizar-senha").hasRole("MEDICO");
+                    auth.requestMatchers(HttpMethod.PUT, "/adicionar-perfil/{id}", "inativar-cadastro/{id}", "reativar-cadastro/{id}").hasRole("ADMINISTRADOR");
+                    auth.requestMatchers(HttpMethod.GET, "/pacientes").hasRole("MEDICO");
+                    auth.requestMatchers(HttpMethod.PUT, "/pacientes").hasRole("COLABORADOR");
+                    auth.requestMatchers(HttpMethod.POST, "/pacientes").hasRole("COLABORADOR");
+                    auth.requestMatchers(HttpMethod.DELETE, "/pacientes").hasRole("COLABORADOR");
+                    auth.requestMatchers("/medicos**").hasRole("COLABORADOR");
+                    auth.requestMatchers("/consultas**").hasRole("COLABORADOR");
+                    auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro customizado antes do filtro padrão de autenticação
                 .build(); // Constroi a configuração final da cadeia de filtros
@@ -92,6 +103,15 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder(); // Bean que criptografa senhas usando BCrypt (recomendado para segurança)
     }
 
+
+    @Bean
+    public RoleHierarchy roleHierarchy(){
+        var hierarquia = "ROLE_ADMINISTRADOR > ROLE_COORDENADOR" +
+                "ROLE_COORDENADOR > ROLE_COLABORADOR\n" +
+                "ROLE_COLABORADOR > ROLE_MEDICO\n" +
+                "ROLE_MEDICO > ROLE_PACIENTE";
+        return RoleHierarchyImpl.fromHierarchy(hierarquia);
+    }
 
 
 

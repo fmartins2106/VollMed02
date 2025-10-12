@@ -22,7 +22,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             from Medico m
             where m.ativo = true
             and m.especialidade = :especialidade
-            and m.idmedico not in (
+            and m.id not in (
                 select 
                 c.medico.id
                 from Consulta c
@@ -39,7 +39,7 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             select
             m.ativo
             from Medico m
-            where m.idmedico = :idmedico and m.ativo = true
+            where m.id = :id and m.ativo = true
             """)
     boolean findAtivoById(Long idmedico);
 

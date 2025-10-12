@@ -39,7 +39,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             // Valida o token e obtém o "subject" (login do usuário dentro do token)
             var email = tokenService.getSuject(tokenJWT);
             // Busca o usuário no banco pelo login recuperado do token
-            Usuario usuario = usuarioRepository.findByEmailIgnoreCaseAndVerificadoTrue(email)
+            Usuario usuario = usuarioRepository.findByLoginIgnoreCaseAndVerificadoTrue(email)
                     .orElseThrow(() -> new UsernameNotFoundException("Email não encontrado."));
             // Cria um objeto de autenticação do Spring Security com:
             // - principal: o usuário

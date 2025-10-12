@@ -1,6 +1,10 @@
 package voll.med2.api.domain.consulta;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import voll.med2.api.domain.ValidacaoException;
 import voll.med2.api.domain.consulta.validacoes.agendamento.ValidadorAgendamentoConsultas;
@@ -8,6 +12,8 @@ import voll.med2.api.domain.consulta.validacoes.cancelamento.ValidadorCancelamen
 import voll.med2.api.domain.medico.Medico;
 import voll.med2.api.domain.medico.MedicoRepository;
 import voll.med2.api.domain.paciente.PacienteRepository;
+import voll.med2.api.domain.usuario.Usuario;
+import voll.med2.api.infra.seguranca.HierarquiaService;
 
 import java.util.List;
 
@@ -28,6 +34,11 @@ public class AgendaDeConsultas {
 
     @Autowired
     private List<ValidadorCancelamentoConsultas> validadorCancelamentoConsultas;
+
+    @Autowired
+    private HierarquiaService hierarquiaService;
+
+    @Transactional
     public DadosDetalhamentoConsulta agendarConsulta(DadosAgendamentoConsulta dadosAgendamentoConsulta){
         // Verifica se o paciente informado existe no banco de dados
         if (!pacienteRepository.existsById(dadosAgendamentoConsulta.idpaciente())){
@@ -58,6 +69,8 @@ public class AgendaDeConsultas {
         // Retorna os dados detalhados da consulta agendada (DTO de resposta para a camada externa)
         return new DadosDetalhamentoConsulta(consulta);
     }
+
+    @Transactional
     private Medico escolherMedico(DadosAgendamentoConsulta dadosAgendamentoConsulta) {
         // Caso o ID de um médico tenha sido informado diretamente na requisição,
         // retorna esse médico sem precisar aplicar regras adicionais
@@ -82,6 +95,7 @@ public class AgendaDeConsultas {
         );
     }
 
+    @Transactional
     public void cancelarConsulta(DadosCancelamentoConsulta dadosCancelamentoConsulta){
         // Verifica se a consulta informada existe no banco de dados
         if (!consultaRepository.existsById(dadosCancelamentoConsulta.idconsulta())){
@@ -96,6 +110,19 @@ public class AgendaDeConsultas {
         // passando o motivo do cancelamento como parâmetro
         consulta.cancelar(dadosCancelamentoConsulta.motivoCancelamento());
     }
+
+    public Page<DadosListagemConsultas> listarConsultas(Pageable pageable, Usuario logado) {
+        if (hierarquiaService.usuarioTemPermissao(logado, "MEDICO")) {
+            // Consulta apenas do médico logado
+            return consultaRepository.findByMedicoIdAndMotivoCancelamentoIsNull(logado.getId(), pageable)
+                    .map(DadosListagemConsultas::new);
+        }
+        // Consulta todas as consultas não canceladas
+        return consultaRepository.findByMotivoCancelamentoIsNull(pageable)
+                .map(DadosListagemConsultas::new);
+    }
+
+
 
 
 

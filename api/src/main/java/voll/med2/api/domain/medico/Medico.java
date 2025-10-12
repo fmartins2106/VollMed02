@@ -15,11 +15,11 @@ import java.util.Optional;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(of = "idmedico")
+@EqualsAndHashCode(of = "id")
 public class Medico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idmedico;
+    private Long id;
     private String nome;
     private String email;
     private String telefone;

@@ -12,7 +12,7 @@ public record DadosListagemMedicos(
         Endereco endereco) {
 
     public DadosListagemMedicos (Medico medico){
-        this(medico.getIdmedico(), medico.getNome(), medico.getEmail(), medico.getTelefone(),
+        this(medico.getId(), medico.getNome(), medico.getEmail(), medico.getTelefone(),
                 medico.getCrm(), medico.getEspecialidade(), medico.getEndereco());
     }
 

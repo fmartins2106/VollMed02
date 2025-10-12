@@ -39,13 +39,13 @@ public class UsuarioController {
         return ResponseEntity.ok(page);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/lista-usuarios/{id}")
     public ResponseEntity<DadosListagemUsuarios> pesquisaPorID(@PathVariable Long id){
         var usuario = usuarioService.pesquisaPorId(id);
         return ResponseEntity.ok(new DadosListagemUsuarios(usuario));
     }
 
-    @GetMapping("/{nomeCompleto}")
+    @GetMapping("/lista-usuarios/{nomeCompleto}")
     public ResponseEntity<DadosListagemUsuarios> pesquisaPorID(@PathVariable String nomeCompleto){
         var usuario = usuarioService.pesquisaPorNome(nomeCompleto);
         return ResponseEntity.ok(new DadosListagemUsuarios(usuario));

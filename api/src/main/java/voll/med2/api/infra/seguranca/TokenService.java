@@ -22,7 +22,7 @@ public class TokenService {
 // 1. Assinar os tokens JWT (garante autenticidade e integridade)
 // 2. Validar os tokens recebidos nas requisições
 // Ou seja, é a “senha” que o servidor usa para criar e verificar JWTs.
-    @Value("${api.security.token.secret}") // Injeta no campo 'secret' o valor definido no application.properties
+    @Value("${spring.api.token.authentication.secret}") // Injeta no campo 'secret' o valor definido no application.properties
     private String secret; // Chave secreta usada para assinar/verificar o token
 
 

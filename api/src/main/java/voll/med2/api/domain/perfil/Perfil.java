@@ -13,10 +13,10 @@ public class Perfil implements GrantedAuthority {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private Perfilnome perfilnome;
+    private Perfilnome perfilNome;
 
     @Override
     public String getAuthority() {
-        return "ROLE_"+perfilnome;
+        return "ROLE_"+perfilNome;
     }
 }

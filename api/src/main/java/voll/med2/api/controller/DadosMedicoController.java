@@ -25,7 +25,7 @@ public class DadosMedicoController {
     public ResponseEntity salvar(@RequestBody @Valid DadosCadastroMedico dadosCadastroMedico, UriComponentsBuilder uriComponentsBuilder){
         var medico = new Medico(dadosCadastroMedico);
         medicoRepository.save(medico);
-        var uri = uriComponentsBuilder.path("/medico/{idmedico}").buildAndExpand(medico.getIdmedico()).toUri();
+        var uri = uriComponentsBuilder.path("/medico/{idmedico}").buildAndExpand(medico.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoMedico(medico));
     }
 
