@@ -1,0 +1,1 @@
+alter table dbmedicos RENAME COLUMN idmedico to id;

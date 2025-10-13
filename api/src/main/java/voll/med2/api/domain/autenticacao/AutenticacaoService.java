@@ -44,13 +44,10 @@ public class AutenticacaoService { // Implementa UserDetailsService para autenti
     public DadosTokenJTW atualizarToken(DadosRefreshToken dadosRefreshToken){
         var refreshToken = dadosRefreshToken.refreshToken();
         var usuario = tokenService.getSuject(refreshToken);
-
         var email = usuarioRepository.findByLogin(usuario)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado."));
-
         var token = tokenService.gerarTokenJWT(email);
         var tokenAtualizado = tokenService.refreshToken(email);
-
         return new DadosTokenJTW(token, tokenAtualizado);
     }
 

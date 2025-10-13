@@ -38,15 +38,15 @@ public class DadosMedicoController {
     @PutMapping
     @Transactional
     public ResponseEntity atualizarDadosMedico(@RequestBody @Valid DadosAtualizacaoMedico dadosAtualizacaoMedico){
-        var medico = medicoRepository.getReferenceById(dadosAtualizacaoMedico.idmedico());
+        var medico = medicoRepository.getReferenceById(dadosAtualizacaoMedico.id());
         medico.atualizarDados(dadosAtualizacaoMedico);
         return ResponseEntity.ok().body(new DadosDetalhamentoMedico(medico));
     }
 
-    @DeleteMapping("{idmedico}")
+    @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deletarDadosMedico(@PathVariable Long idmedico){
-        var medico = medicoRepository.getReferenceById(idmedico);
+    public ResponseEntity deletarDadosMedico(@PathVariable Long id){
+        var medico = medicoRepository.getReferenceById(id);
         medico.excluir();
         return ResponseEntity.noContent().build();
     }

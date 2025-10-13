@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable()) // Desativa proteção CSRF, útil para APIs REST stateless
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Define que a aplicação não mantém sessão (API REST stateless)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/atualizar-token","/login", "/cadastrar", "/validacao-email-token").permitAll(); // Permite acesso público a /path
+                    auth.requestMatchers("/atualizar-token","/login", "/cadastrar", "/verificar-conta**").permitAll(); // Permite acesso público a /path
                     auth.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll(); // Permite acesso público à documentação Swagger
                     auth.requestMatchers(HttpMethod.GET,"/listar-usuarios**").hasRole("ADMINISTRADOR");
                     auth.requestMatchers(HttpMethod.PUT, "/atualizar-dados", "atualizar-senha").hasRole("MEDICO");

@@ -12,7 +12,6 @@ import voll.med2.api.domain.perfil.DadosPerfil;
 import voll.med2.api.domain.usuario.*;
 
 @RestController
-@RequestMapping("usuarios")
 public class UsuarioController {
 
 
@@ -64,10 +63,10 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/validacao-email-token")
-    public ResponseEntity<Void> validarToken(String codigo){
+    @GetMapping("/verificar-conta")
+    public ResponseEntity<String> validarToken(@RequestParam String codigo){
         usuarioService.validacaoTokenEmail(codigo);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok("Conta verificada com sucesso.");
     }
 
     @PutMapping("/adicionar-perfil/{id}")

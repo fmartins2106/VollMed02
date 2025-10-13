@@ -36,7 +36,7 @@ public class Usuario implements UserDetails {
     private String senha;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "usuario_perfis",
+    @JoinTable(name = "usuarios_perfis",
     joinColumns = @JoinColumn(name = "usuario_id"),
     inverseJoinColumns = @JoinColumn(name = "perfil_id"))
     private List<Perfil> perfis = new ArrayList<>();
@@ -46,6 +46,7 @@ public class Usuario implements UserDetails {
 
     private Boolean verificado;
     private String token;
+    @Column(name = "expiracao_token")
     private LocalDateTime expiracaoToken;
 
 

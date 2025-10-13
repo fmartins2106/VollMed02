@@ -3,7 +3,7 @@ package voll.med2.api.domain.medico;
 import voll.med2.api.domain.endereco.Endereco;
 
 public record DadosDetalhamentoMedico(
-        Long idmedico,
+        Long id,
         String nome,
         String email,
         String telefone,

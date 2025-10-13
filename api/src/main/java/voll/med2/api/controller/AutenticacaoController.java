@@ -41,7 +41,7 @@ public class AutenticacaoController {
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("atualizar-token")
+    @PostMapping("/atualizar-token")
     public ResponseEntity<DadosTokenJTW> atualizarLogin(@RequestBody @Valid DadosRefreshToken dadosRefreshToken){
         var tokenAtualizado = autenticacaoService.atualizarToken(dadosRefreshToken);
         return ResponseEntity.ok(tokenAtualizado);

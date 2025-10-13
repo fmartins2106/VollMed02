@@ -48,7 +48,6 @@ public class EmailService {
             // Lança exceção personalizada caso algo dê errado
             throw new ValidacaoException("Erro ao enviar o email.");
         }
-
         // Envia a mensagem
         javaMailSender.send(message);
     }
@@ -63,7 +62,7 @@ public class EmailService {
                         "Por favor clieque no link abaixo para verificar seu conta <br>" +
                         "<h3> <a href=\"[[URL]]\" target=\"_self\">VERIFICAR</a></h3>" +
                         "Obrigado <br>" +
-                        "Forun Hub :).",
+                        "Med Voll :).",
                 usuario.getNomeCompleto(),
                 urlSite + "/verificar-conta?codigo="+usuario.getToken()
         );

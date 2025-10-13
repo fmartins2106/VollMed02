@@ -13,6 +13,7 @@ public class Perfil implements GrantedAuthority {
 
     @Enumerated(EnumType.STRING)
     @NotNull
+    @Column(name = "perfilNome") // igual ao nome no banco
     private Perfilnome perfilNome;
 
     @Override
